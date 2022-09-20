@@ -89,6 +89,64 @@ int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
 }
 
 
+int compare_int(const void *p, const void *q)
+{
+    const int *a = p;
+    const int *b = q;
+    return *a - *b;
+}
+
+
+void mysort(void *base, size_t nmemb, size_t size, int (*compar)(const void*, const void*))
+{
+    char *p_end = (char *) base + nmemb * size;
+    char temp;
+
+    size_t i = 0;
+
+
+    for (char *pi_cur = (char *) base; pi_cur != p_end; pi_cur += 2 * size, ++i)
+    {
+        if (nmemb <= i)
+            break;
+
+        for (size_t j = i; j < nmemb - (1 + i); ++j)
+        {
+            char *p1 = (char *) base + size * j;
+            char *p2 = (char *) base + size * (j + 1);
+
+
+            if (compar((void *) p1, (void *) p2) > 0)
+            {
+                for (size_t elem = 0; elem < size; ++elem)
+                {
+                    temp = *p1;
+                    *(p1++) = *p2;
+                    *(p2++) = temp;
+                }
+            }
+        }
+        for (size_t j = nmemb - i - 1; j > i; --j)
+        {
+            char *p1 = (char *) base + size * j;
+            char *p2 = (char *) base + size * (j - 1);
+
+
+            if (compar((void *) p1, (void *) p2) < 0)
+            {
+                for (size_t elem = 0; elem < size; ++elem)
+                {
+                    temp = *p1;
+                    *(p1++) = *p2;
+                    *(p2++) = temp;
+                }
+            }
+        }
+    }
+}
+
+
+
 void writing_to_file(FILE *f, int *pcur, int *pend)
 {
     while (pcur != pend)
@@ -140,6 +198,9 @@ int main(int argc, char **argv)
             return INCORRECT_ARR;
 
         cur_ptr = pcur_new;
+        mysort(cur_ptr, pend_new - cur_ptr, sizeof(int), compare_int);
+
+        cur_ptr = pcur_new;
         writing_to_file(g, cur_ptr, pend_new);
 
         free(pcur_new);
@@ -147,6 +208,9 @@ int main(int argc, char **argv)
 
     if (argc != MAX_ARGS_COUNT)
     {
+        cur_ptr = arr_ptr;
+        mysort(cur_ptr, count, sizeof(int), compare_int);
+
         cur_ptr = arr_ptr;
         writing_to_file(g, cur_ptr, p_end);
     }
