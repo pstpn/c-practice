@@ -12,8 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "tools.h"
-#include "my_err.h"
+#include "../inc/tools.h"
+#include "../inc/my_err.h"
 
 
 int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)

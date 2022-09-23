@@ -10,7 +10,7 @@
  */
 #include <stdio.h>
 
-#include "my_err.h"
+#include "../inc/my_err.h"
 
 
 int get_count(FILE *f, int *count)
