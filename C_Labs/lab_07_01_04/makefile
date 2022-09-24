@@ -25,9 +25,11 @@ $(OBJ_FOLDER)in_out.o : $(C_FOLDER)in_out.c $(INC_FOLDER)in_out.h
 $(OBJ_FOLDER)tools.o : $(C_FOLDER)tools.c $(INC_FOLDER)tools.h $(INC_FOLDER)my_err.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY : clean release debug func_test
+.PHONY : clean release debug func
 clean : 
 	rm *.exe *.txt
 
-func_test:
+func :
 	- ./func_tests/scripts/func_tests.sh
+
+# unit :
