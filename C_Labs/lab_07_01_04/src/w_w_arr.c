@@ -19,7 +19,7 @@
 int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
 {
     if (pb_src == NULL || pe_src == NULL ||
-    pb_src == pe_src)
+        pb_src >= pe_src || pb_src == *pb_dst)
         return INCORRECT_ARGS;
 
     const int *pcur = pb_src;

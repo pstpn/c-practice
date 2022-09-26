@@ -101,7 +101,8 @@ int main(int argc, char **argv)
     fclose(f);
 
     FILE *g = fopen(*(++argv), "w");
-
+    if (g == NULL)
+        return INCORRECT_ARGS;
 
     if (argc == MAX_ARGS_COUNT)
     {
@@ -113,7 +114,10 @@ int main(int argc, char **argv)
 
         cur_ptr = arr_ptr;
         if (key(cur_ptr, p_end, &pcur_new, &pend_new))
+        {
+            free(arr_ptr);
             return INCORRECT_ARR;
+        }
 
         cur_ptr = pcur_new;
         mysort(cur_ptr, pend_new - cur_ptr, sizeof(int), compare_int);
