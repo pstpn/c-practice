@@ -3,7 +3,6 @@
 
 #include "../inc/w_w_arr.h"
 #include "../inc/my_err.h"
-#include "../inc/check_main.h"
 
 
 void init(int *arr, int size, int elem)
@@ -170,8 +169,10 @@ START_TEST(test_key_eq_ptrs)
 END_TEST
 
 
-Suite *key_suite(Suite *s)
+Suite *key_suite(void)
 {
+    Suite *s = suite_create("key_tests");
+
     TCase *tc_neg;
     TCase *tc_pos;
 

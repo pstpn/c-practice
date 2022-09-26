@@ -10,6 +10,7 @@
  */
 #include <stdio.h>
 
+#include "../inc/tools.h"
 #include "../inc/my_err.h"
 
 

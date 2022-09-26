@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../inc/w_w_arr.h"
 #include "../inc/tools.h"
 #include "../inc/my_err.h"
 
@@ -19,7 +20,9 @@
 int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
 {
     if (pb_src == NULL || pe_src == NULL ||
-        pb_src >= pe_src || pb_src == *pb_dst)
+        pb_src >= pe_src || pb_src == *pb_dst ||
+        pe_src == *pb_dst || pb_src == *pe_dst ||
+        pe_src == *pe_dst || *pb_dst >= *pe_dst)
         return INCORRECT_ARGS;
 
     const int *pcur = pb_src;
@@ -39,6 +42,9 @@ int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
         return INCORRECT_ARR;
 
     *pb_dst = malloc(count * sizeof(int));
+    if (*pb_dst == NULL)
+        return MEMORY_ERROR;
+        
     *pe_dst = *pb_dst + count;
 
     while (pb_src != pe_src)

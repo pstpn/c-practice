@@ -10,6 +10,8 @@
  */
 #include <stdio.h>
 
+#include "../inc/in_out.h"
+
 
 void array_filling(FILE *f, int *pcur, int *pend)
 {

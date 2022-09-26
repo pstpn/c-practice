@@ -1,30 +1,21 @@
-#include <stdlib.h>
 #include <check.h>
 
-#include "../inc/check_main.h"
-
-
-Suite *tests_suite(void)
-{
-    Suite *s = suite_create("my_tests");
-
-    s = mysort_suite(s);
-    s = key_suite(s);
-
-    return s;
-}
+#include "check_key.c"
+#include "check_mysort.c"
 
 
 int main(void)
 {
-    Suite *s = tests_suite();
+    Suite *s = mysort_suite();
 
     SRunner *runner = srunner_create(s);
+    s = key_suite();
+
+    srunner_add_suite(runner, s);
 
     srunner_run_all(runner, CK_VERBOSE);
 
     int errors = srunner_ntests_failed(runner);
-
 
     srunner_free(runner);
 
