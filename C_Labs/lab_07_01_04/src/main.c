@@ -113,7 +113,10 @@ int main(int argc, char **argv)
     if (argc == MAX_ARGS_COUNT)
     {
         if (**(++argv) != 'f' || *(++(*argv)) != '\0')
+        {
+            free(arr_ptr);
             return INCORRECT_ARGS;
+        }
         
         int *pcur_new = NULL, *pend_new = NULL;
 

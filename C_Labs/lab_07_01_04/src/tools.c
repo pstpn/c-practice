@@ -41,7 +41,7 @@ double get_avg(const int *pcur, const int *pend)
         ++count;
     }
 
-    return summ / count;
+    return (double) summ / count;
 }
 
 

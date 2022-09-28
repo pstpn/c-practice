@@ -28,7 +28,7 @@ func : debug
 	- func_tests/scripts/func_tests.sh
 
 unit : unit_tests.exe
-	-./unit_tests.exe
+	- ./unit_tests.exe
 unit : OBJS := $(filter-out $(OBJ_FOLDER)check_main.o,$(patsubst $(UNIT_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(UNIT_FILES)))
 
 unit_tests.exe : $(OBJS) $(OBJ_FOLDER)check_main.o
