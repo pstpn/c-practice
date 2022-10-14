@@ -10,6 +10,8 @@
 
 #define MIN_ARGS 4
 #define MAX_ARGS 5
+#define TRUE 1
+#define FALSE 0
 
 
 int get_size(FILE *f, int *n, int *m)
@@ -109,6 +111,67 @@ int n_2_m_1, int n_1, int m_2)
 }
 
 
+void addition_or_sub_strs(double str_1[], double str_2[], int n, int sub)
+{
+    for (int i = 0; i < n; ++i)
+        str_1[i] += (sub) ? -str_2[i] : str_2[i];
+}
+
+
+int get_nonzero(double **mtrx, int col, int a, int b)
+{
+    for (;a < b; ++a)
+        if (!(mtrx[a][col] >= 0 && mtrx[a][col] <= 0))
+            return a;
+    
+    return -1;
+}
+
+
+void div_str(double str[], int n, double div)
+{
+    for (int i = 0; i < n; ++i)
+        str[i] /= div;
+}
+
+
+void get_det_and_write(FILE *f, double **mtrx, int n)
+{
+    double det = 1;
+
+
+    for (int k = 0; k < n; ++k)
+    {
+        if (mtrx[k][k] >= 0 && mtrx[k][k] <= 0)
+        {
+            int ind = get_nonzero(mtrx, k, k + 1, n);
+
+
+            if (ind < 0 || (k && get_nonzero(mtrx, k - 1, k, n) < 0))
+            {
+                det = 0;
+                break;
+            }
+            
+            addition_or_sub_strs(mtrx[k], mtrx[ind], n, FALSE);
+        }
+
+        for (int i = k + 1; i < n; ++i)
+            if (!(mtrx[i][k] >= 0 && mtrx[i][k] <= 0))
+            {
+                div_str(mtrx[k] + k + 1, n - (k + 1), (double) mtrx[k][k] / mtrx[i][k]);
+                addition_or_sub_strs(mtrx[i] + k + 1, mtrx[k] + k + 1, n - (k + 1), TRUE);
+                div_str(mtrx[k] + k + 1, n - (k + 1), (double) mtrx[i][k] / mtrx[k][k]);
+                mtrx[i][k] = 0;
+            }
+
+        det *= mtrx[k][k];
+    }
+
+    fprintf(f, "%lf", det);
+}
+
+
 void free_matrix(double **data, int n)
 {
     for (int i = 0; i < n; i++)
@@ -116,19 +179,6 @@ void free_matrix(double **data, int n)
 
     free(data);
 }
-
-
-// void writing_matrix(FILE *f, double **mtrx, int n, int m)
-// {
-//     for (int i = 0; i < n; ++i)
-//     {
-//         for (int j = 0; j < m; ++j)
-//             fprintf(f, "%lf%s", mtrx[i][j], 
-//             (j == m - 1) ? "\0" : " ");
-        
-//         fprintf(f, "%s", (i == n - 1) ? "\0" : "\n");
-//     }
-// }
 
 
 int main(int argc, char **argv)
@@ -209,6 +259,7 @@ int main(int argc, char **argv)
 
         matrix_addition_and_write(res, mtrx_1, mtrx_2, n_1, m_1);
         
+        free_matrix(mtrx_2, 1);
         fclose(res);
         fclose(g);
     }
@@ -256,14 +307,27 @@ int main(int argc, char **argv)
 
         matrix_product_and_write(res, mtrx_1, mtrx_2, n_2, n_1, m_2);
         
+        free_matrix(mtrx_2, 1);
         fclose(res);
         fclose(g);
     }
-    // else if (argc == MIN_ARGS && argv[1][0] == 'o' &&
-    // argv[1][1] == '\0')
-    // {
+    else if (argc == MIN_ARGS && argv[1][0] == 'o' &&
+    argv[1][1] == '\0')
+    {
+        if (n_1 != m_1)
+            return ERR_GET_SIZE;
+
+        FILE *res = fopen(argv[3], "w");
+        if (res == NULL)
+        {
+            free_matrix(mtrx_1, 1);
+            return ERR_FILE;
+        }
+
+        get_det_and_write(res, mtrx_1, n_1);
         
-    // }
+        fclose(res);
+    }
     else
     {
         free_matrix(mtrx_1, 1);
