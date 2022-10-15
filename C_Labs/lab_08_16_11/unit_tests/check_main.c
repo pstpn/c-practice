@@ -1,17 +1,13 @@
 #include <check.h>
 
-#include "check_key.c"
-#include "check_mysort.c"
+#include "check_get_det.c"
 
 
 int main(void)
 {
-    Suite *s = mysort_suite();
+    Suite *s = get_det_suite();
 
     SRunner *runner = srunner_create(s);
-    s = key_suite();
-
-    srunner_add_suite(runner, s);
 
     srunner_run_all(runner, CK_VERBOSE);
 

@@ -1,1 +1,1 @@
-./func_tests/data/neg_03_input.txt ./out.txt
+o ./func_tests/data/neg_03_in_1.txt ./out.txt

@@ -1,1 +1,1 @@
-./func_tests/data/neg_04_input.txt ./out.txt 44 sdsd
+odfd ./func_tests/data/neg_03_in_1.txt ./out.txt

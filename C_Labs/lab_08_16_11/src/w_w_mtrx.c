@@ -11,11 +11,11 @@ double** allocate_matrix(int n, int m)
     double **ptrs, *data;
 
 
-    ptrs = malloc(n * sizeof(double*));
+    ptrs = calloc(n, sizeof(double*));
     if (!ptrs)
         return NULL;
 
-    data = malloc(n * m * sizeof(double));
+    data = calloc(n * m, sizeof(double));
 
     if (!data)
     {
@@ -32,7 +32,7 @@ double** allocate_matrix(int n, int m)
 
 int filling_matrix(FILE *f, double **ptrs, int n, int m)
 {
-    char buf;
+    char buf = '\0';
 
 
     for (int i = 0; i < n; ++i)
