@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 
-double** allocate_matrix(int n, int m);
+double **allocate_matrix(int n, int m);
 int filling_matrix(FILE *f, double **ptrs, int n, int m);
 void matrix_addition_and_write(FILE *f, double **mtrx_1, double **mtrx_2, int n, int m);
 void matrix_product_and_write(FILE *f, double **mtrx_1, double **mtrx_2, 

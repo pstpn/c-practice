@@ -6,7 +6,7 @@
 #include "../inc/tools.h"
 
 
-double** allocate_matrix(int n, int m)
+double **allocate_matrix(int n, int m)
 {
     double **ptrs, *data;
 
@@ -32,21 +32,14 @@ double** allocate_matrix(int n, int m)
 
 int filling_matrix(FILE *f, double **ptrs, int n, int m)
 {
-    char buf = '\0';
-
-
     for (int i = 0; i < n; ++i)
     {
         for (int j = 0; j < m; ++j)
             if (fscanf(f, "%lf", &(ptrs[i][j])) != 1)
                 return ERR_READING;
-            
-        fscanf(f, "%c", &buf);
-        if (buf != '\n' && i != n - 1)
-            return ERR_READING;
     }
     
-    if (feof(f) == 0)
+    if ((feof(f) == 0 && fgetc(f) != '\n'))
         return ERR_READING;
 
     return SUCCESS;
@@ -134,7 +127,7 @@ void get_det_and_write(FILE *f, double **mtrx, int n)
 void free_matrix(double **data, int n)
 {
     for (int i = 0; i < n; i++)
-       free(data[i]);
+        free(data[i]);
 
     free(data);
 }

@@ -9,7 +9,7 @@ int get_size(FILE *f, int *n, int *m)
 
 
     if (fscanf(f, "%d%d%c", n, m, &buf) != 3 ||
-    buf != '\n' || *n < 1 || *m < 1)
+        buf != '\n' || *n < 1 || *m < 1)
         return ERR_GET_SIZE;
 
     return SUCCESS;

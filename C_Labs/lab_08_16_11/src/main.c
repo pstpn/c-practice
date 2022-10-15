@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     fclose(f);
 
     if (argc == MAX_ARGS && argv[1][0] == 'a' &&
-    argv[1][1] == '\0')
+        argv[1][1] == '\0')
     {
         FILE *g = fopen(argv[3], "r");
         if (g == NULL)
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
         fclose(g);
     }
     else if (argc == MAX_ARGS && argv[1][0] == 'm' &&
-    argv[1][1] == '\0')
+        argv[1][1] == '\0')
     {
         FILE *g = fopen(argv[3], "r");
         if (g == NULL)
@@ -177,10 +177,13 @@ int main(int argc, char **argv)
         fclose(g);
     }
     else if (argc == MIN_ARGS && argv[1][0] == 'o' &&
-    argv[1][1] == '\0')
+        argv[1][1] == '\0')
     {
         if (n_1 != m_1)
+        {
+            free_matrix(mtrx_1, 1);
             return ERR_GET_SIZE;
+        }
 
         FILE *res = fopen(argv[3], "w");
         if (res == NULL)
