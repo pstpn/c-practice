@@ -7,11 +7,8 @@ pos_out="$2"
 
 # Проверка на использование оболочки valgrind и запуск программы
 if [ "$USE_VALGRIND" != "" ]; then
-    if [ "$#" -eq "3" ]; then
-        xargs -a "$3" valgrind --log-file=./log.txt --quiet ./app.exe
-    else
-        valgrind --log-file=./log.txt --quiet ./app.exe < "$pos_in" > ./out.txt
-    fi
+
+    xargs -a "$3" valgrind --log-file=./log.txt --quiet ./app.exe
 
     # Запуск компаратора
     ./func_tests/scripts/comparator.sh "$pos_out" ./out.txt
@@ -28,11 +25,8 @@ if [ "$USE_VALGRIND" != "" ]; then
         exit 4
     fi
 else
-    if [ "$#" -eq "3" ]; then
-        xargs -a "$3" ./app.exe
-    else
-        ./app.exe < "$pos_in" > ./out.txt
-    fi
+
+    xargs -a "$3" ./app.exe
 
     # Запуск компаратора
     ./func_tests/scripts/comparator.sh "$pos_out" ./out.txt

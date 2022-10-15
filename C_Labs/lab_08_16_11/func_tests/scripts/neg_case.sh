@@ -2,7 +2,7 @@
 
 # Проверка на использование оболочки valgrind и запуск программы
 if [ "$USE_VALGRIND" != "" ]; then
-    if xargs -a "$3" valgrind --log-file=./log.txt --quiet ./app.exe > ./neg_out.txt; then
+    if xargs -a "$3" valgrind --log-file=./log.txt --quiet ./app.exe; then
         if [ -s ./log.txt ]; then
             exit 1
         fi
@@ -13,7 +13,7 @@ if [ "$USE_VALGRIND" != "" ]; then
         exit 4
     fi
 else
-    if xargs -a "$3" ./app.exe > ./neg_out.txt; then
+    if xargs -a "$3" ./app.exe; then
         exit 5
     else
         exit 0

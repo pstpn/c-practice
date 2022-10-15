@@ -1,6 +1,7 @@
 CC := gcc
 CFLAGS := -std=c99 -Wall -Werror -Wextra -Wpedantic -Wfloat-conversion -Wfloat-equal -Wvla
 C_FOLDER := ./src/
+SRC_FILES := $(wildcard $(C_FOLDER)*.c)
 INC_FOLDER := ./inc/
 OBJ_FOLDER := ./out/
 UNIT_FOLDER := ./unit_tests/
