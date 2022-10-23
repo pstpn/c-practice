@@ -44,6 +44,7 @@
 #include "../inc/my_err.h"
 #include "../inc/tools.h"
 #include "../inc/w_w_mtrx.h"
+#include "../inc/w_w_mem.h"
 
 
 int main(int argc, char **argv)
