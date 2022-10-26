@@ -31,11 +31,11 @@ void init_movies_arr(movies_t *movies)
 }
 
 
-int realloc_memory(movies_t *movies)
+int append_movie(movies_t *movies, movie_t *movie)
 {
     if (!movies->movies)
     {
-        movies->movies = calloc(INIT_SIZE, sizeof(movie_t));
+        movies->movies = calloc(INIT_SIZE, sizeof(movie_t *));
         if (!movies->movies)
             return ERR_ALLOC;
         
@@ -45,13 +45,15 @@ int realloc_memory(movies_t *movies)
         if (movies->len == movies->allocated)
         {
             void *tmp = realloc(movies->movies,
-                movies->step * movies->allocated * sizeof(movie_t));
+                movies->step * movies->allocated * sizeof(movie_t *));
             if (!tmp)
                 return ERR_ALLOC;
             
             movies->movies = tmp;
             movies->allocated *= movies->step;
         }
+
+    movies->movies[(movies->len)++] = movie;
     
     return SUCCESS;
 }
@@ -68,8 +70,8 @@ void free_movies(movies_t *movies)
 {
     for (int i = 0; i < movies->len; ++i)
     {
-        free(movies->movies[i].name);
-        free(movies->movies[i].title);
+        free(movies->movies[i]->name);
+        free(movies->movies[i]->title);
     }
 
     free(movies->movies);

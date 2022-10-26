@@ -6,7 +6,7 @@
 
 int init_movie_alloc(movie_t *movie);
 void init_movies_arr(movies_t *movies);
-int realloc_memory(movies_t *movies);
+int append_movie(movies_t *movies, movie_t *movie);
 void free_movie(movie_t *movie);
 void free_movies(movies_t *movies);
 

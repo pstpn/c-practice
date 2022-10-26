@@ -29,6 +29,7 @@
 #include <stdlib.h>
 
 #include "../inc/w_w_mem.h"
+#include "../inc/w_w_movies.h.h"
 #include "../inc/in_out.h"
 #include "../inc/tools.h"
 #include "../inc/my_types.h"
@@ -57,39 +58,30 @@ int main(int argc, char *argv[])
         return INCORRECT_FILENAME;
 
     movies_t movies;
-
     init_movies_arr(&movies);
 
 
     if (argc == MIN_ARGS)
     {
-        if (realloc_memory(&movies))
-            return ERR_ALLOC;
+        int code;
 
-        movie_t movie;
-        if (init_movie_alloc(&movie))
-        {
-            free_movies(&movies);
-            fclose(f);
-            printf("ERROR_ALLOC!\n");
-            return ERR_ALLOC;
-        }
 
-        if (read_movie(f, &movie))
+        code = read_movies_and_sort(f, &movies, sort_field);
+        if (code == ERR_READING)
         {
-            free_movie(&movie);
-            free_movies(&movies);
             fclose(f);
-            printf("ERROR_READ!\n");
+            free_movies(&movies);
             return ERR_READING;
         }
-
-        // if (read_movies_and_sort(f, &films, &len, sort_field))
-        //     return INCORRECT_FILE;
+        else if (code == ERR_ALLOC)
+        {
+            fclose(f);
+            free_movies(&movies);
+            return ERR_ALLOC;
+        }
 
         // print_structs(len, films);
 
-        free_movie(&movie);
         free_movies(&movies);
         fclose(f);
     }

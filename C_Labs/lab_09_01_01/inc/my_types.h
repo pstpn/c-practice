@@ -13,7 +13,7 @@ typedef struct
     int len;
     int step;
     int allocated;
-    movie_t *movies;
+    movie_t **movies;
 }movies_t;
 
 
