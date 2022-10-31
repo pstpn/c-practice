@@ -42,8 +42,6 @@ int main(int argc, char *argv[])
     char correct_fields[NUMBER_OF_FIELDS][MAX_FIELD_LENGTH + 1] = { "title", "name", "year" };
     char sort_field;
 
-    // int len;
-
 
     if ((argc < MIN_ARGS && argc != MAX_ARGS) ||
         (argc > MAX_ARGS && argv[3][0] != '\"'))
@@ -80,7 +78,7 @@ int main(int argc, char *argv[])
             return ERR_ALLOC;
         }
 
-        // print_structs(len, films);
+        print_movies(&movies);
 
         free_movies(&movies);
         fclose(f);

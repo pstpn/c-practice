@@ -1,25 +1,10 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "../inc/my_types.h"
+#include "../inc/w_w_movie.h"
 #include "../inc/my_def.h"
 #include "../inc/my_err.h"
-
-
-int init_movie_alloc(movie_t *movie)
-{
-    movie->name = calloc(INIT_SIZE, sizeof(char));
-    if (!movie->name)
-        return ERR_ALLOC;
-
-    movie->title = calloc(INIT_SIZE, sizeof(char));
-    if (!movie->title)
-    {
-        free(movie->name);
-        return ERR_ALLOC;
-    }
-
-    return SUCCESS;
-}
 
 
 void init_movies_arr(movies_t *movies)
@@ -28,6 +13,25 @@ void init_movies_arr(movies_t *movies)
     movies->allocated = 0;
     movies->step = 2;
     movies->movies = NULL;
+}
+
+
+int get_buf(movie_t *movie, movie_t *buf)
+{
+    buf->title = strdup(movie->title);
+    if (!buf->title)
+        return ERR_ALLOC;
+
+    buf->name = strdup(movie->name);
+    if (!buf->name)
+    {
+        free(buf->title);
+        return ERR_ALLOC;
+    }
+
+    buf->year = movie->year;
+
+    return SUCCESS;
 }
 
 
@@ -53,7 +57,14 @@ int append_movie(movies_t *movies, movie_t *movie)
             movies->allocated *= movies->step;
         }
 
-    movies->movies[(movies->len)++] = movie;
+    movies->movies[movies->len].title = NULL;
+    movies->movies[movies->len].name = NULL;
+
+    if (init_movie(&(movies->movies[movies->len]),
+        movie->title, movie->name, movie->year))
+        return ERR_ALLOC;
+
+    ++(movies->len);
     
     return SUCCESS;
 }
@@ -70,8 +81,8 @@ void free_movies(movies_t *movies)
 {
     for (int i = 0; i < movies->len; ++i)
     {
-        free(movies->movies[i]->name);
-        free(movies->movies[i]->title);
+        free(movies->movies[i].name);
+        free(movies->movies[i].title);
     }
 
     free(movies->movies);

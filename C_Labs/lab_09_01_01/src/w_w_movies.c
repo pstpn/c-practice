@@ -1,86 +1,117 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "../inc/my_types.h"
+#include "../inc/my_def.h"
 #include "../inc/in_out.h"
+#include "../inc/w_w_movie.h"
 #include "../inc/w_w_mem.h"
 #include "../inc/my_err.h"
 
 
-void replace_movies(movies_t *movies, const int ind_1, const int ind_2)
+int replace_movies(movies_t *movies, const int ind_1, const int ind_2)
 {
-    int buf_year = movies->movies[ind_1]->year;
+    movie_t buf;
+    if (get_buf(&(movies->movies[ind_1]), &buf))
+        return ERR_ALLOC;
 
-    char *buf_title = movies->movies[ind_1]->title;
-    char *buf_name = movies->movies[ind_1]->name;
 
+    for (int i = movies->len - 1; i > ind_2; --i)
+    {
+        movies->movies[i].title = movies->movies[i - 1].title;
+        movies->movies[i].name = movies->movies[i - 1].name;
+        movies->movies[i].year = movies->movies[i - 1].year;
+    }
 
-    movies->movies[ind_1]->year = movies->movies[ind_2]->year;
-    movies->movies[ind_1]->title = movies->movies[ind_2]->title;
-    movies->movies[ind_1]->name = movies->movies[ind_2]->name;
+    movies->movies[ind_2].title = buf.title;
+    movies->movies[ind_2].name = buf.name;
+    movies->movies[ind_2].year = buf.year;
 
-    movies->movies[ind_2]->year = buf_year;
-    movies->movies[ind_2]->title = buf_title;
-    movies->movies[ind_2]->name = buf_name;
+    return SUCCESS;
 }
 
 
 int read_movies_and_sort(FILE *f, movies_t *movies, char sort_field)
 {
+    movie_t movie;
+
+    char *cur_title = NULL;
+    char *cur_name = NULL;
+
+    int cur_year;
+
+
     while (feof(f) == 0)
     {
-        movie_t movie;
-        if (init_movie_alloc(&movie))
+        movie.title = NULL;
+        movie.name = NULL;
+
+        if (read_movie(f, &cur_title, &cur_name, &cur_year))
+            return ERR_READING;
+
+        if (init_movie(&movie, cur_title, cur_name, cur_year))
             return ERR_ALLOC;
 
-
-        if (read_movie(f, &movie))
+        if (append_movie(movies, &movie))
         {
             free_movie(&movie);
-            return ERR_READING;
+            return ERR_ALLOC;
         }
-
-        if (movies->len == movies->allocated)
-            if (append_movie(movies, &movie))
-            {
-                free_movie(&movie);
-                return ERR_ALLOC;
-            }
 
         if (sort_field == 't')
         {
             int cur_ind = movies->len - 1;
 
-            while (cur_ind > 0 && strcmp((*(movies->movies[cur_ind - 1])).title, (*(movies->movies[cur_ind])).title) > 0)
+
+            do
+            {
                 --cur_ind;
-
-            if (cur_ind != movies->len - 1)
-                replace_movies(movies, movies->len - 1, cur_ind);
+            } while (cur_ind >= 0 &&
+                strcmp(movies->movies[cur_ind].title, movies->movies[movies->len - 1].title) > 0);
+                
+            if (replace_movies(movies, movies->len - 1, cur_ind + 1))
+            {
+                free_movie(&movie);
+                return ERR_ALLOC;
+            }
         }
-        // if (sort_field == 'n')
-        // {
-        //     cur_len = *len;
+        if (sort_field == 'n')
+        {
+            int cur_ind = movies->len - 1;
 
-        //     while (*len > 0 && strcmp_al((*films)[*len - 1].name, (*films)[*len].name) > 0)
-        //     {
-        //         replace_structs(films, *len - 1, *len);
-        //         (*len)--;
-        //     }
 
-        //     *len = cur_len;
-        // }
-        // if (sort_field == 'y')
-        // {
-        //     cur_len = *len;
+            do
+            {
+                --cur_ind;
+            } while (cur_ind >= 0 &&
+                strcmp(movies->movies[cur_ind].name, movies->movies[movies->len - 1].name) > 0);
+                
+            if (replace_movies(movies, movies->len - 1, cur_ind + 1))
+            {
+                free_movie(&movie);
+                return ERR_ALLOC;
+            }
+        }
+        if (sort_field == 'y')
+        {
+            int cur_ind = movies->len - 1;
 
-        //     while (*len > 0 && (*films)[*len - 1].year > (*films)[*len].year)
-        //     {
-        //         replace_structs(films, *len - 1, *len);
-        //         (*len)--;
-        //     }
 
-        //     *len = cur_len;
-        // }
+            do
+            {
+                --cur_ind;
+            } while (cur_ind >= 0 &&
+                movies->movies[cur_ind].year > movies->movies[movies->len - 1].year);
+                
+            if (replace_movies(movies, movies->len - 1, cur_ind + 1))
+            {
+                free_movie(&movie);
+                return ERR_ALLOC;
+            }
+        }
+
+        free_movie(&movie);
     }
 
     return SUCCESS;

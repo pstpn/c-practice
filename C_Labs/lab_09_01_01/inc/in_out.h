@@ -6,6 +6,7 @@
 #include "my_types.h"
 
 
-int read_movie(FILE *f, movie_t *movie);
+int read_movie(FILE *f, char **title, char **name, int *year);
+void print_movies(movies_t *movies);
 
 #endif // ___MY_IN_OUT____
