@@ -3,6 +3,7 @@
 
 #include "../inc/my_err.h"
 #include "../inc/my_types.h"
+#include "../inc/my_def.h"
 
 
 int init_movie(movie_t *movie, char *title, char *name, int year)
@@ -20,7 +21,6 @@ int init_movie(movie_t *movie, char *title, char *name, int year)
         free(cur_field);
         return ERR_ALLOC;
     }
-
 
     cur_field = strdup(name);
 
@@ -40,5 +40,40 @@ int init_movie(movie_t *movie, char *title, char *name, int year)
 
     movie->year = year;
 
+    return SUCCESS;
+}
+
+
+int append_movie(movies_t *movies, movie_t *movie)
+{
+    if (!movies->movies)
+    {
+        movies->movies = calloc(INIT_SIZE, sizeof(movie_t));
+        if (!movies->movies)
+            return ERR_ALLOC;
+        
+        movies->allocated = INIT_SIZE;
+    }
+    else
+        if (movies->len == movies->allocated)
+        {
+            void *tmp = realloc(movies->movies,
+                movies->step * movies->allocated * sizeof(movie_t));
+            if (!tmp)
+                return ERR_ALLOC;
+            
+            movies->movies = tmp;
+            movies->allocated *= movies->step;
+        }
+
+    movies->movies[movies->len].title = NULL;
+    movies->movies[movies->len].name = NULL;
+
+    if (init_movie(&(movies->movies[movies->len]),
+        movie->title, movie->name, movie->year))
+        return ERR_ALLOC;
+
+    ++(movies->len);
+    
     return SUCCESS;
 }

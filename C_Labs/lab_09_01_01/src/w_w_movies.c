@@ -36,14 +36,17 @@ int read_movies_and_sort(FILE *f, movies_t *movies, char sort_field)
 {
     movie_t movie;
 
-    char *cur_title = NULL;
-    char *cur_name = NULL;
+    char *cur_title;
+    char *cur_name;
 
     int cur_year;
 
 
     while (feof(f) == 0)
     {
+        cur_title = NULL;
+        cur_name = NULL;
+
         movie.title = NULL;
         movie.name = NULL;
 
@@ -55,6 +58,8 @@ int read_movies_and_sort(FILE *f, movies_t *movies, char sort_field)
 
         if (append_movie(movies, &movie))
         {
+            free(cur_title);
+            free(cur_name);
             free_movie(&movie);
             return ERR_ALLOC;
         }
@@ -72,6 +77,8 @@ int read_movies_and_sort(FILE *f, movies_t *movies, char sort_field)
                 
             if (replace_movies(movies, movies->len - 1, cur_ind + 1))
             {
+                free(cur_title);
+                free(cur_name);
                 free_movie(&movie);
                 return ERR_ALLOC;
             }
@@ -89,6 +96,8 @@ int read_movies_and_sort(FILE *f, movies_t *movies, char sort_field)
                 
             if (replace_movies(movies, movies->len - 1, cur_ind + 1))
             {
+                free(cur_title);
+                free(cur_name);
                 free_movie(&movie);
                 return ERR_ALLOC;
             }
@@ -106,13 +115,67 @@ int read_movies_and_sort(FILE *f, movies_t *movies, char sort_field)
                 
             if (replace_movies(movies, movies->len - 1, cur_ind + 1))
             {
+                free(cur_title);
+                free(cur_name);
                 free_movie(&movie);
                 return ERR_ALLOC;
             }
         }
 
+        free(cur_title);
+        free(cur_name);
         free_movie(&movie);
     }
 
     return SUCCESS;
+}
+
+
+int binary_search(movies_t *movies, char sort_field, char *key)
+{
+    int low = 0, high = movies->len - 1, middle;
+    int cmp;
+
+
+    while (low <= high)
+    {
+        middle = (low + high) / 2;
+
+        if (sort_field == 't')
+        {
+            cmp = strcmp(movies->movies[middle].title, key);
+
+            if (cmp > 0)
+                high = middle - 1;
+            else if (cmp < 0)
+                low = middle + 1;
+            else
+                return middle;
+        }
+        if (sort_field == 'n')
+        {
+            cmp = strcmp(movies->movies[middle].name, key);
+
+            if (cmp > 0)
+                high = middle - 1;
+            else if (cmp < 0)
+                low = middle + 1;
+            else
+                return middle;
+        }
+        if (sort_field == 'y')
+        {
+            int int_key = atoi(key);
+
+
+            if (movies->movies[middle].year > int_key)
+                high = middle - 1;
+            else if (movies->movies[middle].year < int_key)
+                low = middle + 1;
+            else
+                return middle;
+        }
+    }
+
+    return NOT_FOUND;
 }

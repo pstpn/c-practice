@@ -10,6 +10,7 @@
  */
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "../inc/my_def.h"
 
@@ -33,4 +34,21 @@ int does_the_field_exist(char *field, char correct_fields[NUMBER_OF_FIELDS][MAX_
         }
 
     return FALSE;
+}
+
+
+int is_correct_digit(const char *str)
+{
+    if (*str == '-' && isdigit(*(str + 1)))
+        str++;
+
+    while (*str != '\0')
+    {
+        if (*str < '0' || *str > '9')
+            return FALSE;
+
+        str++;
+    }
+
+    return TRUE;
 }

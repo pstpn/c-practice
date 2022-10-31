@@ -8,5 +8,6 @@
 #define TRUE 1
 #define FALSE 0
 #define INIT_SIZE 10
+#define NOT_FOUND -1
 
 #endif // ___MY_DEF____

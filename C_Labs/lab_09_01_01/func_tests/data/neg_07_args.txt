@@ -1,1 +1,1 @@
-./func_tests/data/neg_07_in.txt name
+./func_tests/data/neg_07_in.txt name abWkx uxwbi hbehbwebc ueFHEi
