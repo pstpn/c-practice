@@ -32,6 +32,55 @@ int replace_movies(movies_t *movies, const int ind_1, const int ind_2)
 }
 
 
+int sort_movies(char sort_field, movies_t *movies)
+{
+    if (sort_field == 't')
+    {
+        int cur_ind = movies->len - 1;
+
+
+        do
+        {
+            --cur_ind;
+        } while (cur_ind >= 0 &&
+            strcmp(movies->movies[cur_ind].title, movies->movies[movies->len - 1].title) > 0);
+            
+        if (replace_movies(movies, movies->len - 1, cur_ind + 1))
+            return ERR_ALLOC;
+    }
+    if (sort_field == 'n')
+    {
+        int cur_ind = movies->len - 1;
+
+
+        do
+        {
+            --cur_ind;
+        } while (cur_ind >= 0 &&
+            strcmp(movies->movies[cur_ind].name, movies->movies[movies->len - 1].name) > 0);
+            
+        if (replace_movies(movies, movies->len - 1, cur_ind + 1))
+            return ERR_ALLOC;
+    }
+    if (sort_field == 'y')
+    {
+        int cur_ind = movies->len - 1;
+
+
+        do
+        {
+            --cur_ind;
+        } while (cur_ind >= 0 &&
+            movies->movies[cur_ind].year > movies->movies[movies->len - 1].year);
+            
+        if (replace_movies(movies, movies->len - 1, cur_ind + 1))
+            return ERR_ALLOC;
+    }
+
+    return SUCCESS;
+}
+
+
 int read_movies_and_sort(FILE *f, movies_t *movies, char sort_field)
 {
     movie_t movie;
@@ -64,62 +113,12 @@ int read_movies_and_sort(FILE *f, movies_t *movies, char sort_field)
             return ERR_ALLOC;
         }
 
-        if (sort_field == 't')
+        if (sort_movies(sort_field, movies))
         {
-            int cur_ind = movies->len - 1;
-
-
-            do
-            {
-                --cur_ind;
-            } while (cur_ind >= 0 &&
-                strcmp(movies->movies[cur_ind].title, movies->movies[movies->len - 1].title) > 0);
-                
-            if (replace_movies(movies, movies->len - 1, cur_ind + 1))
-            {
-                free(cur_title);
-                free(cur_name);
-                free_movie(&movie);
-                return ERR_ALLOC;
-            }
-        }
-        if (sort_field == 'n')
-        {
-            int cur_ind = movies->len - 1;
-
-
-            do
-            {
-                --cur_ind;
-            } while (cur_ind >= 0 &&
-                strcmp(movies->movies[cur_ind].name, movies->movies[movies->len - 1].name) > 0);
-                
-            if (replace_movies(movies, movies->len - 1, cur_ind + 1))
-            {
-                free(cur_title);
-                free(cur_name);
-                free_movie(&movie);
-                return ERR_ALLOC;
-            }
-        }
-        if (sort_field == 'y')
-        {
-            int cur_ind = movies->len - 1;
-
-
-            do
-            {
-                --cur_ind;
-            } while (cur_ind >= 0 &&
-                movies->movies[cur_ind].year > movies->movies[movies->len - 1].year);
-                
-            if (replace_movies(movies, movies->len - 1, cur_ind + 1))
-            {
-                free(cur_title);
-                free(cur_name);
-                free_movie(&movie);
-                return ERR_ALLOC;
-            }
+            free(cur_title);
+            free(cur_name);
+            free_movie(&movie);
+            return ERR_ALLOC;
         }
 
         free(cur_title);

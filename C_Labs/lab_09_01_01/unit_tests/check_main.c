@@ -1,15 +1,15 @@
 #include <check.h>
 
-#include "check_key.c"
-#include "check_mysort.c"
+#include "check_search.c"
+#include "check_sort.c"
 
 
 int main(void)
 {
-    Suite *s = mysort_suite();
+    Suite *s = sort_suite();
 
     SRunner *runner = srunner_create(s);
-    s = key_suite();
+    s = search_suite();
 
     srunner_add_suite(runner, s);
 

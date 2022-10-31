@@ -7,6 +7,7 @@ OBJ_FOLDER := ./out/
 UNIT_FOLDER := ./unit_tests/
 UNIT_FILES := $(wildcard $(UNIT_FOLDER)*.c)
 OBJS := $(filter-out $(OBJ_FOLDER)main.o,$(patsubst $(C_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRC_FILES)))
+UNIT_FLAGS := -lcheck -lpthread -lrt -lm
 
 
 debug : CFLAGS += -g3
@@ -27,12 +28,15 @@ $(OBJ_FOLDER)%.o : */%.c $(INC_FOLDER)*.h
 func : debug
 	- func_tests/scripts/func_tests.sh
 
+sub_unit : UNIT_FLAGS += -lsubunit
+sub_unit : unit
+
 unit : unit_tests.exe
 	- ./unit_tests.exe
 unit : OBJS := $(filter-out $(OBJ_FOLDER)check_main.o,$(patsubst $(UNIT_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(UNIT_FILES)))
 
 unit_tests.exe : $(OBJS) $(OBJ_FOLDER)check_main.o
-	$(CC) $^ -o $@ -lcheck -lpthread -lrt -lm
+	$(CC) $^ -o $@ $(UNIT_FLAGS)
 
 clean :
 	- rm *.txt *.exe 
