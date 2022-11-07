@@ -79,9 +79,6 @@ int main(int argc, char *argv[])
         }
 
         print_movies(&movies);
-
-        free_movies(&movies);
-        fclose(f);
     }
     else
     {
@@ -116,12 +113,11 @@ int main(int argc, char *argv[])
             printf("Not found\n");
         else
             printf("%s\n%s\n%d\n", movies.movies[index].title,
-                movies.movies[index].name, movies.movies[index].year);
-
-        free_movies(&movies);
-        fclose(f);
+            movies.movies[index].name, movies.movies[index].year);
     }
 
+    free_movies(&movies);
+    fclose(f);
     
     return SUCCESS;
 }

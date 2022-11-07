@@ -6,7 +6,7 @@ neg_in="$1"
 
 # Проверка на использование оболочки valgrind и запуск программы
 if [ "$USE_VALGRIND" != "" ]; then
-    if xargs -a "$3" valgrind --log-file=./log.txt --quiet ./app.exe < "$neg_in" > ./neg_out.txt; then
+    if xargs -a "$3" valgrind --log-file=./log.txt --leak-check=full --leak-resolution=med  --quiet ./app.exe < "$neg_in" > ./neg_out.txt; then
         if [ -s ./log.txt ]; then
             exit 1
         fi

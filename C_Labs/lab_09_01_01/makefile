@@ -40,3 +40,4 @@ unit_tests.exe : $(OBJS) $(OBJ_FOLDER)check_main.o
 
 clean :
 	- rm *.txt *.exe 
+	- rm -rf ./out

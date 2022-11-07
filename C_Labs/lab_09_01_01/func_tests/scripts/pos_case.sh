@@ -8,7 +8,7 @@ pos_out="$2"
 # Проверка на использование оболочки valgrind и запуск программы
 if [ "$USE_VALGRIND" != "" ]; then
     if [ "$#" -eq "3" ]; then
-        xargs -a "$3" valgrind --log-file=./log.txt --quiet ./app.exe < "$pos_in" > ./out.txt
+        xargs -a "$3" valgrind --log-file=./log.txt --leak-check=full --leak-resolution=med --quiet ./app.exe < "$pos_in" > ./out.txt
     else
         valgrind --log-file=./log.txt --quiet ./app.exe < "$pos_in" > ./out.txt
     fi

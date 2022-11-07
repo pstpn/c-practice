@@ -13,6 +13,8 @@
 int replace_movies(movies_t *movies, const int ind_1, const int ind_2)
 {
     movie_t buf;
+    buf.title = NULL, buf.name = NULL;
+    
     if (get_buf(&(movies->movies[ind_1]), &buf))
         return ERR_ALLOC;
 
@@ -85,44 +87,27 @@ int read_movies_and_sort(FILE *f, movies_t *movies, char sort_field)
 {
     movie_t movie;
 
-    char *cur_title;
-    char *cur_name;
-
-    int cur_year;
-
 
     while (feof(f) == 0)
     {
-        cur_title = NULL;
-        cur_name = NULL;
-
         movie.title = NULL;
         movie.name = NULL;
 
-        if (read_movie(f, &cur_title, &cur_name, &cur_year))
+        if (read_movie(f, &movie.title, &movie.name, &movie.year))
             return ERR_READING;
-
-        if (init_movie(&movie, cur_title, cur_name, cur_year))
-            return ERR_ALLOC;
 
         if (append_movie(movies, &movie))
         {
-            free(cur_title);
-            free(cur_name);
             free_movie(&movie);
             return ERR_ALLOC;
         }
 
         if (sort_movies(sort_field, movies))
         {
-            free(cur_title);
-            free(cur_name);
             free_movie(&movie);
             return ERR_ALLOC;
         }
 
-        free(cur_title);
-        free(cur_name);
         free_movie(&movie);
     }
 

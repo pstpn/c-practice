@@ -12,6 +12,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "../inc/w_w_movie.h"
+#include "../inc/my_types.h"
 #include "../inc/my_def.h"
 
 
@@ -51,4 +53,10 @@ int is_correct_digit(const char *str)
     }
 
     return TRUE;
+}
+
+
+int movie_cpy(movie_t *dst, movie_t *src)
+{
+    return init_movie(dst, src->title, src->name, src->year);
 }

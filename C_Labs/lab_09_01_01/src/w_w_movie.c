@@ -1,14 +1,19 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../inc/tools.h"
+#include "../inc/in_out.h"
+#include "../inc/w_w_mem.h"
 #include "../inc/my_err.h"
 #include "../inc/my_types.h"
 #include "../inc/my_def.h"
 
 
 int init_movie(movie_t *movie, char *title, char *name, int year)
-{ 
+{
     char *cur_field = strdup(title);
+
+
     if (cur_field)
     {
         free(movie->title);
@@ -16,8 +21,6 @@ int init_movie(movie_t *movie, char *title, char *name, int year)
     }
     else
     {
-        free(title);
-        free(name);
         free(cur_field);
         return ERR_ALLOC;
     }
@@ -31,10 +34,7 @@ int init_movie(movie_t *movie, char *title, char *name, int year)
     }
     else
     {
-        free(title);
-        free(name);
         free(cur_field);
-        free(movie->title);
         return ERR_ALLOC;
     }
 
@@ -54,26 +54,20 @@ int append_movie(movies_t *movies, movie_t *movie)
         
         movies->allocated = INIT_SIZE;
     }
-    else
-        if (movies->len == movies->allocated)
-        {
-            void *tmp = realloc(movies->movies,
-                movies->step * movies->allocated * sizeof(movie_t));
-            if (!tmp)
-                return ERR_ALLOC;
-            
-            movies->movies = tmp;
-            movies->allocated *= movies->step;
-        }
+    else if (movies->len == movies->allocated)
+    {
+        void *tmp = realloc(movies->movies,
+        movies->step * movies->allocated * sizeof(movie_t));
+        if (!tmp)
+            return ERR_ALLOC;
+        
+        movies->movies = tmp;
+        movies->allocated *= movies->step;
+    }
 
-    movies->movies[movies->len].title = NULL;
-    movies->movies[movies->len].name = NULL;
-
-    if (init_movie(&(movies->movies[movies->len]),
-        movie->title, movie->name, movie->year))
-        return ERR_ALLOC;
-
-    ++(movies->len);
+    movies->movies[movies->len].title = movie->title;
+    movies->movies[movies->len].name = movie->name;
+    movies->movies[movies->len++].year = movie->year;
     
     return SUCCESS;
 }
