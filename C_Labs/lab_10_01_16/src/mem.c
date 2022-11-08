@@ -6,8 +6,6 @@
 
 void free_list(node_t *top)
 {
-    for (; top->next; top = top->next)
+    for (; top && top->next; top = top->next)
         free(pop_front(&top));
-        
-    free(pop_front(&top));
 }

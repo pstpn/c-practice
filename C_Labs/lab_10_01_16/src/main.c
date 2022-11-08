@@ -26,6 +26,7 @@
  */
 #include <stdio.h>
 
+#include "../inc/operations.h"
 #include "../inc/mem.h"
 #include "../inc/in_out.h"
 #include "../inc/my_types.h"
@@ -62,6 +63,10 @@ int main(int argc, char *argv[])
             return ERR_FILE;
         }
 
+
+        write_watches(stdout, top);
+
+        top = reverse(top);
 
         write_watches(out_file, top);
 
