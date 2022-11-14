@@ -27,6 +27,7 @@
 #include <stdio.h>
 
 #include "../inc/operations.h"
+#include "../inc/tools.h"
 #include "../inc/mem.h"
 #include "../inc/in_out.h"
 #include "../inc/my_types.h"
@@ -63,9 +64,6 @@ int main(int argc, char *argv[])
             return ERR_FILE;
         }
 
-
-        write_watches(stdout, top);
-
         top = reverse(top);
 
         write_watches(out_file, top);
@@ -76,13 +74,39 @@ int main(int argc, char *argv[])
     }
     else if (argv[3][0] == SORT_KEY && argv[3][1] == '\0')
     {
-        return SUCCESS;
+        node_t *top = NULL;
+
+
+        if (get_list(in_file, &top))
+        {
+            fclose(in_file);
+            free_list(top);
+            return ERR_READING;
+        }
+
+        FILE *out_file = fopen(argv[2], "w");
+        if (!out_file)
+        {
+            fclose(in_file);
+            free_list(top);
+            return ERR_FILE;
+        }
+
+        top = sort(top, compare_int);
+
+        write_watches(out_file, top);
+
+        fclose(in_file);
+        fclose(out_file);
+        free_list(top);
     }
     else
     {
         fclose(in_file);
         return ERR_ARGS;
     }
+
+    //TO DO: MEM_ERRORS
 
     return SUCCESS;
 }
