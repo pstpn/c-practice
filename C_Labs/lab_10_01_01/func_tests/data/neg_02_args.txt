@@ -1,1 +1,1 @@
-./func_tests/data/neg_02_in.txt year
+./func_tests/data/neg_02_input.txt ./out.txt r

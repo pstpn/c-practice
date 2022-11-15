@@ -1,1 +1,1 @@
-./func_tests/data/neg_09_in.txt title
+./func_tests/data/neg_09_input.txt ./out.txt r

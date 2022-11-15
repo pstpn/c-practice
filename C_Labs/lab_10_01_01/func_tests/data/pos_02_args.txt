@@ -1,1 +1,1 @@
-./func_tests/data/pos_02_in.txt name
+./func_tests/data/pos_02_input.txt ./out.txt s

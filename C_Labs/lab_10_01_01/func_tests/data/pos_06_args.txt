@@ -1,1 +1,1 @@
-./func_tests/data/pos_06_in.txt title "Toshiro Mifune"
+./func_tests/data/pos_06_input.txt ./out.txt s

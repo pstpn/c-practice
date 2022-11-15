@@ -1,1 +1,1 @@
-./func_tests/data/neg_06_in.txt names
+./func_tests/data/neg_06_input.txt ./out.txt r t r

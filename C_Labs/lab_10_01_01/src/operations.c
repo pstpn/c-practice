@@ -8,6 +8,8 @@
 node_t *reverse(node_t *head)
 {
     node_t *cur = head->next;
+    if (!cur)
+        return head;
 
     node_t *new_head;
 
@@ -20,6 +22,10 @@ node_t *reverse(node_t *head)
     else
     {
         cur->next = head;
+        
+        if (head->next->next == head)
+            head->next = NULL;
+
         return cur;
     }
 

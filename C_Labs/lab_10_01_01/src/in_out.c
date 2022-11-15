@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../inc/list_funcs.h"
 #include "../inc/my_types.h"
@@ -11,6 +12,8 @@ int read_watch(FILE *f, char *model, int *price)
     int ch;
     int i = 0;
 
+
+    memset(model, '\0', MAX_MODEL_LEN + 1);
 
     while ((ch = fgetc(f)) != '\n' && i < MAX_MODEL_LEN)
         model[i++] = ch;

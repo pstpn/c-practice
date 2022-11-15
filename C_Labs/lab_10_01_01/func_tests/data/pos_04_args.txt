@@ -1,1 +1,1 @@
-./func_tests/data/pos_04_in.txt name "Martin Scorsese"
+./func_tests/data/pos_04_input.txt ./out.txt s
