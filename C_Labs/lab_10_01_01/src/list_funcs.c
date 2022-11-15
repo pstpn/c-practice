@@ -26,8 +26,10 @@ node_t *list_add_end(node_t *head, node_t *new_node)
 
 void *pop_front(node_t **head)
 {
-    node_t *cur = *head;
+    if (!(*head))
+        return NULL;
 
+    node_t *cur = *head;
 
     void *pop_data = (*head)->data;
 
