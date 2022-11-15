@@ -8,7 +8,7 @@
 node_t *reverse(node_t *head)
 {
     node_t *cur = head->next;
-    if (!cur)
+    if (!cur || !head)
         return head;
 
     node_t *new_head;
@@ -39,6 +39,12 @@ node_t *reverse(node_t *head)
 void sorted_insert(node_t **head, node_t *element,
 int (*comparator)(const void *, const void *))
 {
+    if (!(*head))
+    {
+        *head = element;
+        return;
+    }
+
     node_t *cur = (*head);
     node_t *tmp = (*head)->next;
 
@@ -69,6 +75,9 @@ int (*comparator)(const void *, const void *))
 
 node_t *sort(node_t *head, int (*comparator)(const void *, const void *))
 {
+    if (!head)
+        return NULL;
+
     void *pop_data = pop_front(&head);
 
     node_t *new_head = calloc(1, sizeof(node_t));
@@ -76,7 +85,7 @@ node_t *sort(node_t *head, int (*comparator)(const void *, const void *))
     new_head->next = NULL;
 
 
-    for (; head; )
+    for (; head;)
     {
         node_t *tmp = calloc(1, sizeof(node_t));
 
