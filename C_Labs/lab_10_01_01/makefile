@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -std=gnu99 -Wall -Werror -Wextra -Wpedantic -Wfloat-conversion -Wfloat-equal -Wvla
+CFLAGS := -std=c99 -Wall -Werror -Wextra -Wpedantic -Wfloat-conversion -Wfloat-equal -Wvla
 C_FOLDER := ./src/
 SRC_FILES := $(wildcard $(C_FOLDER)*.c)
 INC_FOLDER := ./inc/

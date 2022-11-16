@@ -3,6 +3,7 @@
 
 #include "../inc/list_funcs.h"
 #include "../inc/my_types.h"
+#include "../inc/mem.h"
 
 
 node_t *reverse(node_t *head)
@@ -81,6 +82,9 @@ node_t *sort(node_t *head, int (*comparator)(const void *, const void *))
     void *pop_data = pop_front(&head);
 
     node_t *new_head = calloc(1, sizeof(node_t));
+    if (!new_head)
+        return NULL;
+
     new_head->data = pop_data;
     new_head->next = NULL;
 
@@ -88,7 +92,11 @@ node_t *sort(node_t *head, int (*comparator)(const void *, const void *))
     for (; head;)
     {
         node_t *tmp = calloc(1, sizeof(node_t));
-
+        if (!tmp)
+        {
+            free_list(new_head);
+            return NULL;
+        }
 
         pop_data = pop_back(&head);
         

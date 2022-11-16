@@ -106,7 +106,5 @@ int main(int argc, char *argv[])
         return ERR_ARGS;
     }
 
-    //TO DO: MEM_ERRORS
-
     return SUCCESS;
 }
