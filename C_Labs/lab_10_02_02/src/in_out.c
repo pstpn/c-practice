@@ -29,7 +29,7 @@ int get_type(char *type)
 }
 
 
-int read_val(int *count, node_t *head, int *a)
+int read_pol(int *count, node_t **head)
 {
     char buf;
 
@@ -37,11 +37,8 @@ int read_val(int *count, node_t *head, int *a)
     if (scanf("%d", count) != 1 ||
         *count < 1)
         return ERR_READING;
-
-    if (scanf("%d", &(head->elem)) != 1)
-        return ERR_READING;
     
-    for (int i = 0; i < *count - 1; ++i)
+    for (int i = 0; i < *count; ++i)
     {
         node_t *cur_node = calloc(1, sizeof(node_t));
         if (!cur_node)
@@ -62,8 +59,29 @@ int read_val(int *count, node_t *head, int *a)
     if ((buf = fgetc(stdin)) != '\n')
         return ERR_READING;
 
+    return SUCCESS;
+}
+
+
+int read_val(int *count, node_t **head, int *a)
+{
+    char buf;
+
+    
+    if (read_pol(count, head))
+        return ERR_READING;
+
     if (scanf("%d", a) != 1 || (buf = fgetc(stdin)) != '\n')
         return ERR_READING;
 
     return SUCCESS;
+}
+
+
+void print_pol(node_t *head)
+{
+    for (node_t *cur = head; cur; cur = cur->next)
+        printf("%d ", cur->elem);
+    
+    printf("L\n");
 }

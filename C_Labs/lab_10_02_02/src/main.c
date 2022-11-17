@@ -38,17 +38,13 @@ int main(void)
 
     if (strcmp(op_type, VAL) == EQUIL)
     {
-        node_t *head = calloc(1, sizeof(node_t));
-        if (!head)
-            return ERR_ALLOC;
-
-        head->next = NULL;
+        node_t *head = NULL;
 
         int a;
         int count;
 
 
-        if (read_val(&count, head, &a))
+        if (read_val(&count, &head, &a))
         {
             free_list(head);
             return ERR_READING;
@@ -63,19 +59,104 @@ int main(void)
     }
     else if (strcmp(op_type, DDX) == EQUIL)
     {
-        
+        node_t *head = NULL;
+
+        int count;
+
+
+        if (read_pol(&count, &head))
+        {
+            free_list(head);
+            return ERR_READING;
+        }
+
+        node_t *ddx_head = NULL;
+
+
+        if (get_ddx(head, &ddx_head, count))
+        {
+            free_list(ddx_head);
+            free_list(head);
+            return ERR_ALLOC;
+        }
+
+        print_pol(ddx_head);
+
+        free_list(ddx_head);
+        free_list(head);
     }
     else if (strcmp(op_type, SUM) == EQUIL)
     {
-        
+        node_t *first_head = NULL;
+        node_t *second_head = NULL;
+
+        int first_count;
+        int second_count;
+
+
+        if (read_pol(&first_count, &first_head))
+        {
+            free_list(first_head);
+            return ERR_READING;
+        }
+        if (read_pol(&second_count, &second_head))
+        {
+            free_list(first_head);
+            free_list(second_head);
+            return ERR_READING;
+        }
+
+        node_t *sum_head = NULL;
+
+
+        if (get_sum(first_head, second_head, &sum_head, first_count, second_count))
+        {
+            free_list(sum_head);
+            free_list(first_head);
+            free_list(second_head);
+            return ERR_ALLOC;
+        }
+
+        print_pol(sum_head);
+
+        free_list(sum_head);
+        free_list(first_head);
+        free_list(second_head);
     }
     else if (strcmp(op_type, DVD) == EQUIL)
     {
-        
+        node_t *head = NULL;
+
+        int count;
+
+
+        if (read_pol(&count, &head))
+        {
+            free_list(head);
+            return ERR_READING;
+        }
+
+        node_t *first_head = NULL;
+        node_t *second_head = NULL;
+
+
+        if (get_dvd(head, &first_head, &second_head, count))
+        {
+            free_list(first_head);
+            free_list(second_head);
+            free_list(head);
+            return ERR_ALLOC;
+        }
+
+        print_pol(first_head);
+        print_pol(second_head);
+
+        free_list(first_head);
+        free_list(second_head);
+        free_list(head);
     }
     else
         return ERR_READING;
     
-
     return SUCCESS;
 }
