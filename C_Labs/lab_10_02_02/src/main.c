@@ -33,7 +33,7 @@ int main(void)
     char op_type[OPERATION_TYPE_LEN + 1] = { '\0' };
 
 
-    if (get_type(op_type))
+    if (get_type(stdin, op_type))
         return ERR_READING;
 
     if (strcmp(op_type, VAL) == EQUIL)
@@ -44,7 +44,7 @@ int main(void)
         int count;
 
 
-        if (read_val(&count, &head, &a))
+        if (read_val(stdin, &count, &head, &a))
         {
             free_list(head);
             return ERR_READING;
@@ -64,7 +64,7 @@ int main(void)
         int count;
 
 
-        if (read_pol(&count, &head))
+        if (read_pol(stdin, &count, &head))
         {
             free_list(head);
             return ERR_READING;
@@ -94,12 +94,12 @@ int main(void)
         int second_count;
 
 
-        if (read_pol(&first_count, &first_head))
+        if (read_pol(stdin, &first_count, &first_head))
         {
             free_list(first_head);
             return ERR_READING;
         }
-        if (read_pol(&second_count, &second_head))
+        if (read_pol(stdin, &second_count, &second_head))
         {
             free_list(first_head);
             free_list(second_head);
@@ -130,7 +130,7 @@ int main(void)
         int count;
 
 
-        if (read_pol(&count, &head))
+        if (read_pol(stdin, &count, &head))
         {
             free_list(head);
             return ERR_READING;

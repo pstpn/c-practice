@@ -1,15 +1,25 @@
 #include <check.h>
 
-#include "check_reverse.c"
-#include "check_sort.c"
+#include "check_get_val.c"
+#include "check_get_ddx.c"
+#include "check_get_sum.c"
+#include "check_get_dvd.c"
 
 
 int main(void)
 {
-    Suite *s = sort_suite();
+    Suite *s = get_val_suite();
 
     SRunner *runner = srunner_create(s);
-    s = reverse_suite();
+    s = get_ddx_suite();
+
+    srunner_add_suite(runner, s);
+
+    s = get_sum_suite();
+
+    srunner_add_suite(runner, s);
+
+    s = get_dvd_suite();
 
     srunner_add_suite(runner, s);
 

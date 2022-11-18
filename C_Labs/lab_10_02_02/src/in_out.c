@@ -7,20 +7,20 @@
 #include "../inc/list_funcs.h"
 
 
-int get_type(char *type)
+int get_type(FILE *f, char *type)
 {
     char buf;
 
 
     for (int i = 0; i < OPERATION_TYPE_LEN; ++i)
     {
-        type[i] = fgetc(stdin);
+        type[i] = fgetc(f);
 
         if (type[i] == '\n')
             return ERR_READING;
     }
 
-    buf = fgetc(stdin);
+    buf = fgetc(f);
 
     if (buf != '\n')
         return ERR_READING;
@@ -29,12 +29,12 @@ int get_type(char *type)
 }
 
 
-int read_pol(int *count, node_t **head)
+int read_pol(FILE *f, int *count, node_t **head)
 {
     char buf;
 
 
-    if (scanf("%d", count) != 1 ||
+    if (fscanf(f, "%d", count) != 1 ||
         *count < 1)
         return ERR_READING;
     
@@ -47,7 +47,7 @@ int read_pol(int *count, node_t **head)
         cur_node->next = NULL;
 
 
-        if (scanf("%d", &(cur_node->elem)) != 1)
+        if (fscanf(f, "%d", &(cur_node->elem)) != 1)
         {
             free(cur_node);
             return ERR_READING;
@@ -56,22 +56,22 @@ int read_pol(int *count, node_t **head)
         list_add_end(head, cur_node);
     }
 
-    if ((buf = fgetc(stdin)) != '\n')
+    if ((buf = fgetc(f)) != '\n')
         return ERR_READING;
 
     return SUCCESS;
 }
 
 
-int read_val(int *count, node_t **head, int *a)
+int read_val(FILE *f, int *count, node_t **head, int *a)
 {
     char buf;
 
     
-    if (read_pol(count, head))
+    if (read_pol(f, count, head))
         return ERR_READING;
 
-    if (scanf("%d", a) != 1 || (buf = fgetc(stdin)) != '\n')
+    if (fscanf(f, "%d", a) != 1 || (buf = fgetc(f)) != '\n')
         return ERR_READING;
 
     return SUCCESS;
