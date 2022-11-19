@@ -7,11 +7,11 @@
 
 int compare_int(const void *a, const void *b)
 {
-    const int *c = a;
-    const int *d = b;
+    const int c = ((watch_t *) a)->price;
+    const int d = ((watch_t *) b)->price;
 
 
-    return (*c > *d) ? TRUE : FALSE;
+    return (c > d) ? MORE : LESS;
 }
 
 

@@ -34,8 +34,7 @@ int read_pol(FILE *f, int *count, node_t **head)
     char buf;
 
 
-    if (fscanf(f, "%d", count) != 1 ||
-        *count < 1)
+    if (fscanf(f, "%d", count) != 1 || *count < 1)
         return ERR_READING;
     
     for (int i = 0; i < *count; ++i)

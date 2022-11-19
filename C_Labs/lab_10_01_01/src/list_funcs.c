@@ -15,8 +15,8 @@ node_t *list_add_end(node_t *head, node_t *new_node)
     if (!head)
         return new_node;
 
-    for (; cur_node->next; cur_node = cur_node->next)
-        ;
+    while (cur_node->next)
+        cur_node = cur_node->next;
 
     cur_node->next = new_node;
 
@@ -26,17 +26,16 @@ node_t *list_add_end(node_t *head, node_t *new_node)
 
 void *pop_front(node_t **head)
 {
-    if (!(*head) || !(*head)->data)
-        return *head;
+    if (!head || !(*head))
+        return NULL;
 
-    node_t *cur = (*head)->next;
+    node_t *alloc_head = *head;
 
     void *pop_data = (*head)->data;
 
+    *head = (*head)->next;
 
-    free(*head);
-
-    *head = cur;
+    free(alloc_head);
 
     return pop_data;
 }
@@ -44,15 +43,15 @@ void *pop_front(node_t **head)
 
 void *pop_back(node_t **head)
 {
-    if (!(*head) || !(*head)->data)
-        return *head;
+    if (!head || !(*head))
+        return NULL;
 
     node_t *cur_node = *head;
     node_t *del_node = (*head)->next;
 
 
-    for (; del_node && del_node->next; del_node = del_node->next, cur_node = cur_node->next)
-        ;
+    while (del_node && del_node->next)
+        del_node = del_node->next, cur_node = cur_node->next;
 
     void *pop_data;
 
@@ -61,13 +60,13 @@ void *pop_back(node_t **head)
     {
         pop_data = cur_node->data;
         free(cur_node);
-        (*head) = NULL;
+        *head = NULL;
     }
     else
     {
         pop_data = del_node->data;
-        cur_node->next = NULL;
         free(del_node);
+        cur_node->next = NULL;
     }
 
     return pop_data;

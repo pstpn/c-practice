@@ -45,7 +45,7 @@ int get_ddx(node_t *head, node_t **ddx_head, int count)
 int get_sum(node_t *first_head, node_t *second_head, node_t **sum_head, int first_count, int second_count)
 {
     for (node_t *cur_1 = first_head, *cur_2 = second_head;
-    first_count && second_count;)
+        first_count && second_count;)
     {
         node_t *cur_node = calloc(1, sizeof(node_t));
         if (!cur_node)
@@ -58,10 +58,10 @@ int get_sum(node_t *first_head, node_t *second_head, node_t **sum_head, int firs
         {
             cur_node->elem = cur_1->elem + cur_2->elem;
 
-            cur_1 = cur_1->next,
+            cur_1 = cur_1->next;
             cur_2 = cur_2->next;
 
-            --first_count,
+            --first_count;
             --second_count;
         }
         else if (first_count > second_count)

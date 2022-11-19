@@ -8,31 +8,20 @@
 
 node_t *reverse(node_t *head)
 {
-    node_t *cur = head->next;
-    if (!cur || !head)
+    if (!head || !head->next)
         return head;
+
+    node_t *cur = head->next;
 
     node_t *new_head;
 
     
-    if (cur->next)
-    {
-        new_head = reverse(head->next);
-        cur->next = head;
-    }
-    else
-    {
-        cur->next = head;
-        
-        if (head->next->next == head)
-            head->next = NULL;
-
-        return cur;
-    }
+    new_head = reverse(head->next);
+    cur->next = head;
 
     if (head->next->next == head)
         head->next = NULL;
-    
+
     return new_head;
 }
 
@@ -41,36 +30,35 @@ void sorted_insert(node_t **head, node_t *element,
 int (*comparator)(const void *, const void *))
 {
     if (!(*head))
-    {
         *head = element;
-        return;
-    }
-
-    node_t *cur = (*head);
-    node_t *tmp = (*head)->next;
-
-
-    if (comparator(&(((watch_t *) (cur->data))->price),
-    &(((watch_t *) (element->data))->price)))
+    else
     {
-        *head = element;
-        element->next = cur;
-        return;
-    }
+        node_t *cur = NULL;
+        node_t *tmp = *head;
 
-    for (; tmp; tmp = tmp->next, cur = cur->next)
-    {
-        if (comparator(&(((watch_t *) (tmp->data))->price),
-        &(((watch_t *) (element->data))->price)))
+
+        for (; tmp; tmp = tmp->next)
         {
-            cur->next = element;
-            element->next = tmp;
-            return;
-        }
-    }
+            if (comparator(tmp->data, element->data) > EQUIL)
+            {
+                if (!cur)
+                {
+                    element->next = *head;
+                    *head = element;
+                    return;
+                }
 
-    cur->next = element;
-    element->next = NULL;
+                cur->next = element;
+                element->next = tmp;
+                return;
+            }
+
+            cur = tmp;
+        }
+
+        cur->next = element;
+        element->next = NULL;
+    }
 }
 
 
@@ -102,6 +90,7 @@ node_t *sort(node_t *head, int (*comparator)(const void *, const void *))
         
         tmp->data = pop_data;
         tmp->next = NULL;
+        
         sorted_insert(&new_head, tmp, comparator);
     }
 

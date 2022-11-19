@@ -10,4 +10,8 @@
 #define TRUE 1
 #define FALSE 0
 
+#define MORE 1
+#define EQUIL 0
+#define LESS -1
+
 #endif // ___MY_DEF____

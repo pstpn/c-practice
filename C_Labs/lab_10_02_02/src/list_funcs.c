@@ -13,8 +13,8 @@ void list_add_end(node_t **head, node_t *new_node)
     }
 
 
-    for (; cur_node->next; cur_node = cur_node->next)
-        ;
+    while (cur_node->next)
+        cur_node = cur_node->next;
 
     cur_node->next = new_node;
 }
