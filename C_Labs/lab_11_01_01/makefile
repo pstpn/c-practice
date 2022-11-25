@@ -39,5 +39,5 @@ unit_tests.exe : $(OBJS) $(OBJ_FOLDER)check_main.o
 	$(CC) $^ -o $@ $(UNIT_FLAGS)
 
 clean :
-	- rm *.txt *.exe 
+	- rm *.exe 
 	- rm -rf ./out

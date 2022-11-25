@@ -20,7 +20,7 @@ START_TEST(test_my_snprintf_one_in_strs_and_some_format_str)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -42,7 +42,7 @@ START_TEST(test_my_snprintf_many_in_strs_and_some_format_str)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -62,7 +62,7 @@ START_TEST(test_my_snprintf_empty_in_str_and_some_format_str)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -82,7 +82,7 @@ START_TEST(test_my_snprintf_empty_in_str_and_only_spec_format_str)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -104,7 +104,7 @@ START_TEST(test_my_snprintf_empty_in_strs_and_only_spec_format_str)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -124,7 +124,7 @@ START_TEST(test_my_snprintf_null_buff_size)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -142,7 +142,7 @@ START_TEST(test_my_snprintf_one_num_and_some_format_str)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -160,7 +160,7 @@ START_TEST(test_my_snprintf_many_nums_and_some_format_str)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -178,7 +178,7 @@ START_TEST(test_my_snprintf_negative_nums_and_some_format_str)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -196,7 +196,7 @@ START_TEST(test_my_snprintf_one_num_and_only_spec_format_str)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -214,7 +214,7 @@ START_TEST(test_my_snprintf_many_nums_and_only_spec_format_str)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -230,7 +230,7 @@ START_TEST(test_my_snprintf_format_str_without_specs)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -246,7 +246,7 @@ START_TEST(test_my_snprintf_empty_format_str_without_specs)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
@@ -267,7 +267,7 @@ START_TEST(test_my_snprintf_diff_specs_in_format_str)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_mem_eq(buf, my_buf, count);
+    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 

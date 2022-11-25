@@ -2,7 +2,7 @@
 #include <stdarg.h>
 
 
-int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format, ... )
+int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format, ...)
 {
     size_t format_len = 0;
     size_t i = 0, j = 0;
@@ -20,7 +20,7 @@ int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format,
 
     ++format_len;
 
-    size_t zero_size_len = format_len;
+    size_t len = format_len;
 
 
     i = 0;
@@ -38,12 +38,18 @@ int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format,
             int k = 0;
 
 
-            if (!b_size)
+            if (!cur_str)
+                cur_str = "(null)\0";
+            
+            if (!b_size || !buff)
                 while (cur_str[k++] != '\0')
-                    ++zero_size_len;
+                    ++len;
             else
                 while (cur_str[k] != '\0')
+                {
+                    ++len;
                     buff[j++] = cur_str[k++];
+                }
 
             i += 2;
         }
@@ -61,10 +67,10 @@ int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format,
 
             if (!cur_digit)
             {
-                if (!b_size)
-                    ++zero_size_len;
-                else
+                if (b_size && buff)
                     buff[j++] = '0';
+                
+                ++len;
             }
             else
             {
@@ -81,13 +87,13 @@ int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format,
 
                 while (count)
                 {
-                    if (!b_size)
-                        ++zero_size_len;
-                    else
+                    if (b_size && buff)
                         buff[j++] += buf % 10 + '0';
 
                     buf /= 10;
+
                     --count;
+                    ++len;
                 }
             }
             
@@ -95,30 +101,23 @@ int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format,
         }
         else
         {
-            if (b_size)
+            if (b_size && buff)
                 buff[j++] = format[i];
 
             --format_len;
             ++i;
         }
-
-        if (j > b_size - 1 && b_size)
-        {
-            buff[b_size - 1] = '\0';
-            return b_size - 1;
-        }
     }
 
-
-    if (!b_size)
+    if (buff)
     {
-        buff = NULL;
-        return --zero_size_len;
+        if (j >= b_size - 1)
+            buff[b_size - 1] = '\0';
+        else
+            buff[--j] = '\0';
     }
-
-    buff[--j] = '\0';
     
     va_end(cur_param);
 
-    return j;
+    return --len;
 }
