@@ -7,12 +7,12 @@
 
 START_TEST(test_my_snprintf_one_in_strs_and_some_format_str)
 {
-    char format[FORMAT_MAX_LEN + 1] = "Hello, %s!!! Okey.\0";
+    char *format = "Hello, %s!!! Okey.\0";
 
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
-    char ins_str[STR_LEN + 1] = "Stepan";
+    char *ins_str = "Stepan";
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, format, ins_str);
     
@@ -27,14 +27,14 @@ END_TEST
 
 START_TEST(test_my_snprintf_many_in_strs_and_some_format_str)
 {
-    char format[FORMAT_MAX_LEN + 1] = "Hello, %s!!! %s Okey. %s\0";
+    char *format = "Hello, %s!!! %s Okey. %s\0";
 
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
-    char ins_str_1[STR_LEN + 1] = "Stepan";
-    char ins_str_2[STR_LEN + 1] = "Postnov";
-    char ins_str_3[STR_LEN + 1] = "ICS7-31B";
+    char *ins_str_1 = "Stepan";
+    char *ins_str_2 = "Postnov";
+    char *ins_str_3 = "ICS7-31B";
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, format, ins_str_1, ins_str_2, ins_str_3);
     
@@ -49,12 +49,12 @@ END_TEST
 
 START_TEST(test_my_snprintf_empty_in_str_and_some_format_str)
 {
-    char format[FORMAT_MAX_LEN + 1] = "Hello, %s.\0";
+    char *format = "Hello, %s.\0";
 
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
-    char ins_str[STR_LEN + 1] = "";
+    char *ins_str = "";
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, format, ins_str);
     
@@ -69,12 +69,12 @@ END_TEST
 
 START_TEST(test_my_snprintf_empty_in_str_and_only_spec_format_str)
 {
-    char format[FORMAT_MAX_LEN + 1] = "%s\0";
+    char *format = "%s\0";
 
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
-    char ins_str[STR_LEN + 1] = "";
+    char *ins_str = "";
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, format, ins_str);
     
@@ -89,14 +89,14 @@ END_TEST
 
 START_TEST(test_my_snprintf_empty_in_strs_and_only_spec_format_str)
 {
-    char format[FORMAT_MAX_LEN + 1] = "%s%s%s\0";
+    char *format = "%s%s%s\0";
 
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
-    char ins_str_1[STR_LEN + 1] = "";
-    char ins_str_2[STR_LEN + 1] = "";
-    char ins_str_3[STR_LEN + 1] = "";
+    char *ins_str_1 = "";
+    char *ins_str_2 = "";
+    char *ins_str_3 = "";
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, format, ins_str_1, ins_str_2, ins_str_3);
     
@@ -111,12 +111,12 @@ END_TEST
 
 START_TEST(test_my_snprintf_null_buff_size)
 {
-    char format[FORMAT_MAX_LEN + 1] = "Hello, %s!!! Okey.\0";
+    char *format = "Hello, %s!!! Okey.\0";
 
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
-    char ins_str[STR_LEN + 1] = "Stepan";
+    char *ins_str = "Stepan";
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE - BUFF_SIZE, format, ins_str);
     
@@ -124,17 +124,16 @@ START_TEST(test_my_snprintf_null_buff_size)
 
 
     ck_assert_int_eq(count, my_count);
-    ck_assert_str_eq(buf, my_buf);
 }
 END_TEST
 
 
 START_TEST(test_my_snprintf_one_num_and_some_format_str)
 {
-    char format[FORMAT_MAX_LEN + 1] = "Hello, %ho!!! Okey.\0";
+    char *format = "Hello, %ho!!! Okey.\0";
 
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, format, 5155);
     
@@ -149,10 +148,10 @@ END_TEST
 
 START_TEST(test_my_snprintf_many_nums_and_some_format_str)
 {
-    char format[FORMAT_MAX_LEN + 1] = "%ho in %ho%ho\0";
+    char *format = "%ho in %ho%ho\0";
 
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, format, 5155, 0, 737);
     
@@ -167,10 +166,10 @@ END_TEST
 
 START_TEST(test_my_snprintf_negative_nums_and_some_format_str)
 {
-    char format[FORMAT_MAX_LEN + 1] = "%ho in %ho%ho\0";
+    char *format = "%ho in %ho%ho\0";
 
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, format, 5155, 0, -737);
     
@@ -185,10 +184,10 @@ END_TEST
 
 START_TEST(test_my_snprintf_one_num_and_only_spec_format_str)
 {
-    char format[FORMAT_MAX_LEN + 1] = "%ho\0";
+    char *format = "%ho\0";
 
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, format, 13);
     
@@ -203,10 +202,10 @@ END_TEST
 
 START_TEST(test_my_snprintf_many_nums_and_only_spec_format_str)
 {
-    char format[FORMAT_MAX_LEN + 1] = "%ho%ho%ho\0";
+    char *format = "%ho%ho%ho\0";
 
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, format, 13, 1, 53512);
     
@@ -221,8 +220,8 @@ END_TEST
 
 START_TEST(test_my_snprintf_format_str_without_specs)
 {
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, "GGGg");
     
@@ -237,8 +236,8 @@ END_TEST
 
 START_TEST(test_my_snprintf_empty_format_str_without_specs)
 {
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, " ");
     
@@ -253,13 +252,13 @@ END_TEST
 
 START_TEST(test_my_snprintf_diff_specs_in_format_str)
 {
-    char format[FORMAT_MAX_LEN + 1] = "%ho%ho%ho  %s: %s\0";
+    char *format = "%ho%ho%ho  %s: %s\0";
 
-    char my_buf[BUFF_SIZE + 1] = { '\0' };
-    char buf[BUFF_SIZE + 1] = { '\0' };
+    char my_buf[STR_LEN + 1];
+    char buf[STR_LEN + 1];
 
-    char ins_str_1[STR_LEN + 1] = "Stepan";
-    char ins_str_2[STR_LEN + 1] = "Postnov";
+    char *ins_str_1 = "Stepan";
+    char *ins_str_2 = "Postnov";
 
     int my_count = my_snprintf(my_buf, BUFF_SIZE, format, 0, 17, 521, ins_str_1, ins_str_2);
     

@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdint.h>
+
+#include "../inc/my_def.h"
+#include "../inc/tools.h"
 
 
 int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format, ...)
@@ -22,14 +26,13 @@ int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format,
 
     size_t len = format_len;
 
+    va_list cur_param;
+    va_start(cur_param, format);
+
 
     i = 0;
 
-    va_list cur_param;
-    va_start(cur_param, format);
-        
-    
-    while (format_len)
+    while (format[i] != '\0')
     {
         if (format[i] == '%' && format[i + 1] == 's')
         {
@@ -37,9 +40,6 @@ int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format,
 
             int k = 0;
 
-
-            if (!cur_str)
-                cur_str = "(null)\0";
             
             if (!b_size || !buff)
                 while (cur_str[k++] != '\0')
@@ -55,14 +55,8 @@ int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format,
         }
         else if (format[i] == '%' && format[i + 1] == 'h' && format[i + 2] == 'o')
         {
-            unsigned short cur_digit = (unsigned short) va_arg(cur_param, int);
-
-            int buf = 0;
-            int count = 0;
-
-            unsigned short factor_001 = 1;
-            unsigned short factor_010 = 2;
-            unsigned short factor_100 = 4;
+            uint16_t cur_digit = (uint16_t) va_arg(cur_param, int);
+            char bin_buf[BIN_STR_LEN + 1] = { '\0' };
             
 
             if (!cur_digit)
@@ -74,25 +68,35 @@ int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format,
             }
             else
             {
-                for (; cur_digit; ++count)
+                int cur_len = dec_to_bin(cur_digit, bin_buf);
+
+
+                if (cur_len % 3 == 1)
+                    for (int j = 0; j < 2; ++j)
+                    {
+                        for (int k = cur_len - 1; k >= 0; --k)
+                            bin_buf[k + 1] = bin_buf[k];
+
+                        bin_buf[0] = '0';
+                        ++cur_len;
+                    }
+                else if (cur_len % 3 == 2)
                 {
-                    buf *= 10;
+                    for (int k = cur_len - 1; k >= 0; --k)
+                        bin_buf[k + 1] = bin_buf[k];
 
-                    buf += (cur_digit & factor_001) ? factor_001 : 0;
-                    buf += (cur_digit & factor_010) ? factor_010 : 0;
-                    buf += (cur_digit & factor_100) ? factor_100 : 0;
-
-                    cur_digit >>= 3;
+                    bin_buf[0] = '0';
                 }
 
-                while (count)
+                for (int i = 0; bin_buf[i] != '\0'; i += 3)
                 {
-                    if (b_size && buff)
-                        buff[j++] += buf % 10 + '0';
+                    int cur_oct_digit = 0;
 
-                    buf /= 10;
+                    cur_oct_digit += (bin_buf[i] == '1') ? 4 : 0;
+                    cur_oct_digit += (bin_buf[i + 1] == '1') ? 2 : 0;
+                    cur_oct_digit += (bin_buf[i + 2] == '1') ? 1 : 0;
 
-                    --count;
+                    buff[j++] = cur_oct_digit + '0';
                     ++len;
                 }
             }
@@ -111,10 +115,10 @@ int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format,
 
     if (buff)
     {
-        if (j >= b_size - 1)
-            buff[b_size - 1] = '\0';
+        if (b_size > len)
+            buff[len - 1] = '\0';
         else
-            buff[--j] = '\0';
+            buff[b_size - 1] = '\0';
     }
     
     va_end(cur_param);
