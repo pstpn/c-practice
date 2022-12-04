@@ -2,8 +2,8 @@
 #include <stdarg.h>
 #include <stdint.h>
 
-#include "../inc/my_def.h"
-#include "../inc/tools.h"
+#include "tools.h"
+#include "my_def.h"
 
 
 int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format, ...)
@@ -105,7 +105,7 @@ int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format,
         }
         else
         {
-            if (b_size && buff)
+            if (b_size && buff && j < b_size)
                 buff[j++] = format[i];
 
             --format_len;
@@ -115,7 +115,7 @@ int my_snprintf(char *restrict buff, size_t b_size, const char *restrict format,
 
     if (buff)
     {
-        if (b_size > len)
+        if (b_size > len - 1)
             buff[len - 1] = '\0';
         else
             buff[b_size - 1] = '\0';
