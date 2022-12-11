@@ -1,3 +1,13 @@
+/**
+ * @file tools.h
+ * @author Stepan Postnov
+ * @brief Library for tools.c
+ * @version 0.1
+ * @date 2022-12-11
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef ___MY_TOOLS___
 #define ___MY_TOOLS___
 

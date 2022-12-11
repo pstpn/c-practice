@@ -1,3 +1,13 @@
+/**
+ * @file in_out.h
+ * @author Stepan Postnov
+ * @brief Library for in_out.c
+ * @version 0.1
+ * @date 2022-12-11
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef ___MY_IN_OUT___
 #define ___MY_IN_OUT___
 

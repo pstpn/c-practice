@@ -1,3 +1,13 @@
+/**
+ * @file tools.c
+ * @author Stepan Postnov
+ * @brief Tools
+ * @version 0.1
+ * @date 2022-12-11
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,6 +17,14 @@
 #include "my_def.h"
 
 
+/**
+ * @brief Get the all filenames in current folder
+ * 
+ * @param out_filename 
+ * @param folder 
+ * @param count 
+ * @param ... // File extensions
+ */
 void get_all_filenames_in_cur_folder(char *out_filename, char *folder, int count, ...)
 {
     char *command;
@@ -38,6 +56,13 @@ void get_all_filenames_in_cur_folder(char *out_filename, char *folder, int count
 }
 
 
+/**
+ * @brief Checking if a character is a separator
+ * 
+ * @param seps 
+ * @param ch 
+ * @return int 
+ */
 int is_sep_sym(char *seps, char ch)
 {
     for (int i = 0; seps[i]; ++i)
@@ -48,6 +73,13 @@ int is_sep_sym(char *seps, char ch)
 }
 
 
+/**
+ * @brief Get the words count in file
+ * 
+ * @param f 
+ * @param seps 
+ * @return int 
+ */
 int get_words_count_in_file(FILE *f, char *seps)
 {
     int all_words_count = 0;
@@ -76,8 +108,6 @@ int get_words_count_in_file(FILE *f, char *seps)
         
 
         all_words_count += (buf_word[0]) ? 1 : 0;
-
-        // printf("\nCUR_BUF_WORD: %s\n", buf_word);
     }
 
     return all_words_count;
