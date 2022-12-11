@@ -1,0 +1,10 @@
+#ifndef ___MY_IN_OUT___
+#define ___MY_IN_OUT___
+
+#include <stdio.h>
+
+
+void draw_line(int len);
+void print_words_count(char *src_filenames, char *seps);
+
+#endif // ___MY_IN_OUT___
