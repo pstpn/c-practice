@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+// void sorted_insert(node_t **head, node_t *element,
+// int (*comparator)(const void *, const void *))
+// {
+//     if (!(*head))
+//         *head = element;
+//     else
+//     {
+//         node_t *cur = NULL;
+//         node_t *tmp = *head;
+
+
+//         for (; tmp; tmp = tmp->next)
+//         {
+//             if (comparator(tmp->data, element->data) > EQUIL)
+//             {
+//                 if (!cur)
+//                 {
+//                     element->next = *head;
+//                     *head = element;
+//                     return;
+//                 }
+
+//                 cur->next = element;
+//                 element->next = tmp;
+//                 return;
+//             }
+
+//             cur = tmp;
+//         }
+
+//         cur->next = element;
+//         element->next = NULL;
+//     }
+// }
+
+
+// node_t *sort(node_t *head, int (*comparator)(const void *, const void *))
+// {
+//     if (!head)
+//         return NULL;
+
+//     void *pop_data = pop_front(&head);
+
+//     node_t *new_head = calloc(1, sizeof(node_t));
+//     if (!new_head)
+//         return NULL;
+
+//     new_head->data = pop_data;
+//     new_head->next = NULL;
+
+
+//     for (; head;)
+//     {
+//         node_t *tmp = calloc(1, sizeof(node_t));
+//         if (!tmp)
+//         {
+//             free_list(new_head);
+//             return NULL;
+//         }
+
+//         pop_data = pop_back(&head);
+        
+//         tmp->data = pop_data;
+//         tmp->next = NULL;
+        
+//         sorted_insert(&new_head, tmp, comparator);
+//     }
+
+//     return new_head;
+// }
