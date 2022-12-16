@@ -1,3 +1,13 @@
+/**
+ * @file in_out.c
+ * @author Stepan Postnov
+ * @brief 
+ * @version 0.1
+ * @date 2022-12-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <stdio.h>
 
 #include "my_types.h"
@@ -6,6 +16,13 @@
 #include "my_def.h"
 
 
+/**
+ * @brief Get the input element
+ * 
+ * @param f 
+ * @param elem 
+ * @return int 
+ */
 int get_in_elem(FILE *f, char *elem)
 {
     char buf;
@@ -20,6 +37,11 @@ int get_in_elem(FILE *f, char *elem)
 }
 
 
+/**
+ * @brief Clear buffer
+ * 
+ * @param f 
+ */
 void clear_buf(FILE *f)
 {
     char buf = '\0';
@@ -30,6 +52,11 @@ void clear_buf(FILE *f)
 }
 
 
+/**
+ * @brief Draw line
+ * 
+ * @param len 
+ */
 void draw_line(int len)
 {
     for (int i = 0; i < len; ++i)
@@ -39,6 +66,11 @@ void draw_line(int len)
 }
 
 
+/**
+ * @brief Print list
+ * 
+ * @param root_node 
+ */
 void print_list_info(node_t *root_node)
 {
     for (node_t *cur = root_node; cur; cur = cur->next_node)

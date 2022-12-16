@@ -1,3 +1,13 @@
+/**
+ * @file list_funcs.c
+ * @author Stepan Postnov
+ * @brief 
+ * @version 0.1
+ * @date 2022-12-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -8,6 +18,13 @@
 #include "my_err.h"
 
 
+/**
+ * @brief Adding a node to the end
+ * 
+ * @param head 
+ * @param new_node 
+ * @return node_t* 
+ */
 node_t *list_add_end(node_t *head, node_t *new_node)
 {
     node_t *cur_node = head;
@@ -26,6 +43,12 @@ node_t *list_add_end(node_t *head, node_t *new_node)
 }
 
 
+/**
+ * @brief Removing the head of the list
+ * 
+ * @param head 
+ * @return char 
+ */
 char pop_front(node_t **head)
 {
     assert(head);
@@ -52,6 +75,12 @@ char pop_front(node_t **head)
 }
 
 
+/**
+ * @brief Removing the end of a list
+ * 
+ * @param head 
+ * @return char 
+ */
 char pop_back(node_t **head)
 {
     assert(head);
@@ -84,6 +113,13 @@ char pop_back(node_t **head)
 }
 
 
+/**
+ * @brief Removing an arbitrary list node
+ * 
+ * @param head 
+ * @param del_elem 
+ * @return int 
+ */
 int del_list_elem(node_t **head, char del_elem)
 {
     for (node_t *cur = *head; cur; cur = cur->next_node)

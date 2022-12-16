@@ -1,10 +1,13 @@
-/*
-
-
-Операции с двусвязным списком
-
-
-*/
+/**
+ * @file main.c
+ * @author Stepan Postnov
+ * @brief 
+ * @version 0.1
+ * @date 2022-12-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,6 +21,11 @@
 #include "operations.h"
 
 
+/**
+ * @brief Main function
+ * 
+ * @return int 
+ */
 int main(void)
 {
     int key = -1;

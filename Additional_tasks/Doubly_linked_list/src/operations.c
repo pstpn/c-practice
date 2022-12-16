@@ -1,3 +1,13 @@
+/**
+ * @file operations.c
+ * @author Stepan Postnov
+ * @brief 
+ * @version 0.1
+ * @date 2022-12-16
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -7,12 +17,25 @@
 #include "mem.h"
 
 
+/**
+ * @brief Comparator for int values
+ * 
+ * @param a 
+ * @param b 
+ * @return int 
+ */
 int compare_int(int a, int b)
 {
     return a - b;
 }
 
 
+/**
+ * @brief Help function for sort
+ * 
+ * @param head 
+ * @param element 
+ */
 void sorted_insert(node_t **head, node_t *element)
 {
     if (!(*head))
@@ -51,6 +74,12 @@ void sorted_insert(node_t **head, node_t *element)
 }
 
 
+/**
+ * @brief Sort list
+ * 
+ * @param head 
+ * @return node_t* 
+ */
 node_t *sort(node_t *head)
 {
     if (!head)
