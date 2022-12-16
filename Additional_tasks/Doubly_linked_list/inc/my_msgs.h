@@ -6,9 +6,10 @@
 #define INPUT_DEL_VALUE_MSG "\nВведите значение узла, который Вы хотите удалить (один символ): "
 #define DEL_ELEM_MSG "\n%sЭлемент успешно удален!%s\n"
 #define SUCCESSFULLY_DEL_MSG "\n%sЭлемент успешно удален! Удаленный элемент: \"%c\"%s\n"
+#define SUCCESSFULLY_SORT_MSG "\n%sСписок успешно отсортирован!%s\n"
 #define NODE_INFO_MSG "\
 |%sVALUE: %s%*c     %s|%s ADDRESS: %s%*p%s|\
-\n-------------------------------------------------------\
+\n--------------------------------------------------------\
 \n|%sPREV NODE VALUE: %s%*c     %s| %sADDRESS: %s%*p%s|\
 \n|%sNEXT NODE VALUE: %s%*c     %s| %sADDRESS: %s%*p%s|\n"
 #define SUCCESSFULLY_ADD_MSG "\n%sДобавление элемента произведено успешно%s\n"

@@ -1,74 +1,89 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-// void sorted_insert(node_t **head, node_t *element,
-// int (*comparator)(const void *, const void *))
-// {
-//     if (!(*head))
-//         *head = element;
-//     else
-//     {
-//         node_t *cur = NULL;
-//         node_t *tmp = *head;
+#include "my_types.h"
+#include "list_funcs.h"
+#include "my_def.h"
+#include "mem.h"
 
 
-//         for (; tmp; tmp = tmp->next)
-//         {
-//             if (comparator(tmp->data, element->data) > EQUIL)
-//             {
-//                 if (!cur)
-//                 {
-//                     element->next = *head;
-//                     *head = element;
-//                     return;
-//                 }
-
-//                 cur->next = element;
-//                 element->next = tmp;
-//                 return;
-//             }
-
-//             cur = tmp;
-//         }
-
-//         cur->next = element;
-//         element->next = NULL;
-//     }
-// }
+int compare_int(int a, int b)
+{
+    return a - b;
+}
 
 
-// node_t *sort(node_t *head, int (*comparator)(const void *, const void *))
-// {
-//     if (!head)
-//         return NULL;
-
-//     void *pop_data = pop_front(&head);
-
-//     node_t *new_head = calloc(1, sizeof(node_t));
-//     if (!new_head)
-//         return NULL;
-
-//     new_head->data = pop_data;
-//     new_head->next = NULL;
+void sorted_insert(node_t **head, node_t *element)
+{
+    if (!(*head))
+        *head = element;
+    else
+    {
+        node_t *cur = NULL;
+        node_t *tmp = *head;
 
 
-//     for (; head;)
-//     {
-//         node_t *tmp = calloc(1, sizeof(node_t));
-//         if (!tmp)
-//         {
-//             free_list(new_head);
-//             return NULL;
-//         }
+        for (; tmp; tmp = tmp->next_node)
+        {
+            if (compare_int(tmp->value, element->value) > EQUIL)
+            {
+                if (!cur)
+                {
+                    element->next_node = *head;
+                    (*head)->prev_node = element;
+                    *head = element;
+                    return;
+                }
 
-//         pop_data = pop_back(&head);
+                cur->next_node = element;
+                element->prev_node = cur;
+                element->next_node = tmp;
+                tmp->prev_node = element;
+                return;
+            }
+
+            cur = tmp;
+        }
+
+        cur->next_node = element;
+        element->prev_node = cur;
+    }
+}
+
+
+node_t *sort(node_t *head)
+{
+    if (!head)
+        return NULL;
+
+    char pop_data = pop_front(&head);
+
+    node_t *new_head = calloc(1, sizeof(node_t));
+    if (!new_head)
+        return NULL;
+
+    new_head->value = pop_data;
+    new_head->next_node = NULL;
+    new_head->prev_node = NULL;
+
+
+    for (; head;)
+    {
+        node_t *tmp = calloc(1, sizeof(node_t));
+        if (!tmp)
+        {
+            free_list(new_head);
+            return NULL;
+        }
+
+        pop_data = pop_back(&head);
         
-//         tmp->data = pop_data;
-//         tmp->next = NULL;
+        tmp->value = pop_data;
+        tmp->next_node = NULL;
+        tmp->prev_node = NULL;
         
-//         sorted_insert(&new_head, tmp, comparator);
-//     }
+        sorted_insert(&new_head, tmp);
+    }
 
-//     return new_head;
-// }
+    return new_head;
+}

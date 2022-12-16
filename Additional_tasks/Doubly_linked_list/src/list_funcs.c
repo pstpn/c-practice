@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "assert.h"
 
 #include "my_types.h"
 #include "my_def.h"
@@ -25,14 +26,14 @@ node_t *list_add_end(node_t *head, node_t *new_node)
 }
 
 
-char *pop_front(node_t **head)
+char pop_front(node_t **head)
 {
-    if (!head || !(*head))
-        return NULL;
+    assert(head);
+    assert(*head);
 
     node_t *alloc_head = *head;
 
-    char *pop_data = &((*head)->value);
+    char pop_data = (*head)->value;
 
     if ((*head)->next_node)
         (*head)->next_node->prev_node = (*head)->prev_node;
@@ -51,10 +52,10 @@ char *pop_front(node_t **head)
 }
 
 
-char *pop_back(node_t **head)
+char pop_back(node_t **head)
 {
-    if (!head || !(*head))
-        return NULL;
+    assert(head);
+    assert(*head);
 
     node_t *cur_node = *head;
     node_t *del_node = (*head)->next_node;
@@ -63,18 +64,18 @@ char *pop_back(node_t **head)
     while (del_node && del_node->next_node)
         del_node = del_node->next_node, cur_node = cur_node->next_node;
 
-    char *pop_data;
+    char pop_data;
 
 
     if (cur_node == *head && !del_node)
     {
-        pop_data = &(cur_node->value);
+        pop_data = cur_node->value;
         free(cur_node);
         *head = NULL;
     }
     else
     {
-        pop_data = &(del_node->value);
+        pop_data = del_node->value;
         free(del_node);
         cur_node->next_node = NULL;
     }

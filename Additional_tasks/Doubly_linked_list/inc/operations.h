@@ -4,10 +4,8 @@
 #include "my_types.h"
 
 
-// void sorted_insert(node_t **head, node_t *element,
-// int (*comparator)(const void *, const void *));
-// node_t *sort(node_t *head, int (*comparator)(const void *, const void *));
-
-#define OK 0
+int compare_int(int a, int b);
+void sorted_insert(node_t **head, node_t *element);
+node_t *sort(node_t *head);
 
 #endif // ___MY_OPERATIONS___

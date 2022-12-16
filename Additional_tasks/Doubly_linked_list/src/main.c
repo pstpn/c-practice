@@ -15,6 +15,7 @@
 #include "mem.h"
 #include "in_out.h"
 #include "list_funcs.h"
+#include "operations.h"
 
 
 int main(void)
@@ -45,7 +46,10 @@ int main(void)
             }
             case 1:
             {
-                print_list_info(root_node);
+                if (!root_node)
+                    printf(ERR_LIST_IS_EMPTY_MSG, RED, RESET);
+                else
+                    print_list_info(root_node);
                 break;
             }
             case 2:
@@ -107,6 +111,15 @@ int main(void)
             }
             case 4:
             {
+                if (!root_node)
+                    printf(ERR_LIST_IS_EMPTY_MSG, RED, RESET);
+                else
+                {
+                    root_node = sort(root_node);
+
+                    printf(SUCCESSFULLY_SORT_MSG, GREEN, RESET);
+                }
+
                 break;
             }
         }

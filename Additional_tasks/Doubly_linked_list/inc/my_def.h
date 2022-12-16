@@ -8,7 +8,9 @@
 
 #define NOT_FOUND -1
 
-#define TABLE_WIDTH 55
+#define EQUIL 0
+
+#define TABLE_WIDTH 56
 
 #define VALUE_WIDTH 16
 #define POINTER_WIDTH 15
