@@ -57,7 +57,7 @@
  * ментов массива.
  * 
  * @version 0.1
- * @date 2022-09-23
+ * @date 2022-12-21
  * 
  * @copyright Copyright (c) 2022
  * 
@@ -65,8 +65,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "lib_static_arr.h"
-#include "in_out.h"
+#include "lib_arr.h"
+#include "lib_in_out.h"
 #include "tools.h"
 #include "my_err.h"
 #include "my_def.h"

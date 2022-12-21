@@ -2,46 +2,80 @@ CC := gcc
 CFLAGS := -std=c99 -Wall -Werror -Wextra -Wpedantic -Wfloat-conversion -Wfloat-equal -Wvla -I ./inc/ -lm
 C_FOLDER := ./src/
 SRC_FILES := $(wildcard $(C_FOLDER)*.c)
-OBJ_FOLDER := out/
+OBJ_FOLDER := ./out/
 UNIT_FOLDER := ./unit_tests/
+LIBS_FOLDER := ./libs/
 UNIT_FILES := $(wildcard $(UNIT_FOLDER)*.c)
 UNIT_FLAGS := -std=c99 -Wall -Werror -Wextra -Wpedantic -Wfloat-conversion -Wfloat-equal -Wvla -lcheck -lpthread -lrt -I ./inc/ -lm
-STATIC_LIB_OBJ := $(OBJ_FOLDER)lib_static_arr.o
-STATIC_LIB_NAME := $(OBJ_FOLDER)lib_static_arr.a
-OBJS := $(filter-out $(STATIC_LIB_OBJ),$(patsubst $(C_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRC_FILES)))
 
-debug : CFLAGS += -g3
-debug : app.exe
+# Libs
+LIB_OBJS := $(OBJ_FOLDER)lib_arr.o $(OBJ_FOLDER)lib_in_out.o
 
-release : CFLAGS += -DNDEBUG -g0
-release : app.exe
+# Static lib name
+STATIC_LIB_NAMES := $(LIBS_FOLDER)lib_arr.a $(LIBS_FOLDER)lib_in_out.a
 
+# Dynamic lib name
+DYN_LIB_NAMES := $(LIBS_FOLDER)lib_arr.so $(LIBS_FOLDER)lib_in_out.so
+
+OBJS := $(filter-out $(LIB_OBJS),$(patsubst $(C_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRC_FILES)))
+
+# Static lib build (in debug mode)
 Dstatic : CFLAGS += -g3
-Dstatic : static_lib_build app.exe
-Dstatic : OBJS += $(STATIC_LIB_NAME)
+Dstatic : static
 
-static : static_lib_build app.exe
-static : OBJS += $(STATIC_LIB_NAME)
+# Get app with static libs
+static : OBJS += $(STATIC_LIB_NAMES)
+static : $(STATIC_LIB_NAMES) app.exe
 
-static_lib_build : $(STATIC_LIB_OBJ)
-	ar rc $(STATIC_LIB_NAME) $(STATIC_LIB_OBJ)
-	ranlib $(STATIC_LIB_NAME)
+# Build static libs
+$(LIBS_FOLDER)%.a : $(OBJ_FOLDER)%.o
+	mkdir -p $(LIBS_FOLDER)
+	ar rc $@ $<
+	ranlib $@
 
+# Get app with dynamic libs (linkage)
+ld_dynamic : OBJS += $(DYN_LIB_NAMES)
+ld_dynamic : CFLAGS += -fPIC
+ld_dynamic : $(DYN_LIB_NAMES) app.exe
+
+# Dynamic lib build (linkage; in debug mode)
+Dld_dynamic : CFLAGS += -g3
+Dld_dynamic : ld_dynamic
+
+# Build dynamic libs (linkage)
+$(LIBS_FOLDER)%.so : $(OBJ_FOLDER)%.o
+	mkdir -p $(LIBS_FOLDER)
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
+	$(CC) -o $@ -shared $<
+
+dynamic : $(DYN_LIB_NAMES)
+dynamic : $(OBJS) $(OBJ_FOLDER)main.o
+dynamic : 
+	$(CC) $(CFLAGS) -D DYNAMIC -ldl $(OBJS) -o app.exe
+
+# Build app
 app.exe : $(OBJS) $(OBJ_FOLDER)main.o
 	$(CC) $(CFLAGS) $(OBJS) -o $@
 
+# Build *.o files
 $(OBJ_FOLDER)%.o : */%.c
 	mkdir -p out/
 	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: debug release clean func unit static_lib_build static
+.PHONY: clean unit static Dstatic sfunc ld_dynamic Dld_dynamic ldfunc dynamic Ddynamic dfunc
 
-func : debug
+# Func tests for app with static libs
+sfunc : static
+	- func_tests/scripts/func_tests.sh
+
+# Func tests for app with dynamic libs (linkage)
+ldfunc : ld_dynamic
 	- func_tests/scripts/func_tests.sh
 
 sub_unit : UNIT_FLAGS += -lsubunit
 sub_unit : unit
 
+# Unit tests
 unit : unit_tests.exe
 	- ./unit_tests.exe
 unit : OBJS := $(filter-out $(OBJ_FOLDER)check_main.o,$(patsubst $(UNIT_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(UNIT_FILES)))
@@ -49,6 +83,7 @@ unit : OBJS := $(filter-out $(OBJ_FOLDER)check_main.o,$(patsubst $(UNIT_FOLDER)%
 unit_tests.exe : $(OBJS) $(OBJ_FOLDER)check_main.o
 	$(CC) $^ $(UNIT_FLAGS) -o $@
 
+# Del trash
 clean :
 	- rm *.exe *.txt
-	- rm -rf ./out
+	- rm -rf ./out ./libs
