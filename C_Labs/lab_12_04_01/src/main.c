@@ -64,9 +64,9 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+// #include <dlfcn.h>
 
 #include "lib_arr.h"
-#include "lib_in_out.h"
 #include "tools.h"
 #include "my_err.h"
 #include "my_def.h"
@@ -74,6 +74,25 @@
 
 int main(int argc, char **argv)
 {
+    // void *arr_lib = NULL;
+
+    // in_out_t array_filling = (in_out_t) load_func(arr_lib, "./libs/lib_arr.so", "array_filling");
+    // if (!array_filling)
+    //     return OPEN_LIB_ERROR;
+
+    // in_out_t writing_to_file = (in_out_t) load_func(arr_lib, "./libs/lib_arr.so", "writing_to_file");
+    // if (!array_filling)
+    //     return OPEN_LIB_ERROR;
+
+    // key_t key = (key_t) load_func(arr_lib, "./libs/lib_arr.so", "key");
+    // if (!key)
+    //     return OPEN_LIB_ERROR;
+    
+    // mysort_t mysort = (mysort_t) load_func(arr_lib, "./libs/lib_arr.so", "mysort");
+    // if (!mysort)
+    //     return OPEN_LIB_ERROR;
+
+    
     if (argc < MIN_ARGS_COUNT || argc > MAX_ARGS_COUNT)
         return INCORRECT_ARGS_COUNT;
 
@@ -162,6 +181,9 @@ int main(int argc, char **argv)
 
     free(arr_ptr);
     fclose(g);
+
+    // if (DYN)
+    //     dlclose(arr_lib);
 
     return SUCCESS;
 }

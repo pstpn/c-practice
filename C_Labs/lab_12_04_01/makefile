@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -std=c99 -Wall -Werror -Wextra -Wpedantic -Wfloat-conversion -Wfloat-equal -Wvla -I ./inc/ -lm
+CFLAGS := -std=c99 -Wall -Werror -I ./inc/ -lm
 C_FOLDER := ./src/
 SRC_FILES := $(wildcard $(C_FOLDER)*.c)
 OBJ_FOLDER := ./out/
@@ -9,13 +9,13 @@ UNIT_FILES := $(wildcard $(UNIT_FOLDER)*.c)
 UNIT_FLAGS := -std=c99 -Wall -Werror -Wextra -Wpedantic -Wfloat-conversion -Wfloat-equal -Wvla -lcheck -lpthread -lrt -I ./inc/ -lm
 
 # Libs
-LIB_OBJS := $(OBJ_FOLDER)lib_arr.o $(OBJ_FOLDER)lib_in_out.o
+LIB_OBJS := $(OBJ_FOLDER)lib_arr.o
 
 # Static lib name
-STATIC_LIB_NAMES := $(LIBS_FOLDER)lib_arr.a $(LIBS_FOLDER)lib_in_out.a
+STATIC_LIB_NAMES := $(LIBS_FOLDER)lib_arr.a
 
 # Dynamic lib name
-DYN_LIB_NAMES := $(LIBS_FOLDER)lib_arr.so $(LIBS_FOLDER)lib_in_out.so
+DYN_LIB_NAMES := $(LIBS_FOLDER)lib_arr.so
 
 OBJS := $(filter-out $(LIB_OBJS),$(patsubst $(C_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRC_FILES)))
 
@@ -48,10 +48,10 @@ $(LIBS_FOLDER)%.so : $(OBJ_FOLDER)%.o
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
 	$(CC) -o $@ -shared $<
 
-dynamic : $(DYN_LIB_NAMES)
-dynamic : $(OBJS) $(OBJ_FOLDER)main.o
-dynamic : 
-	$(CC) $(CFLAGS) -D DYNAMIC -ldl $(OBJS) -o app.exe
+# # Build dynamic libs (load)
+# dynamic : CFLAGS += -DDYNAMIC -ldl -fPIC
+# dynamic : $(DYN_LIB_NAMES)
+# dynamic : app.exe
 
 # Build app
 app.exe : $(OBJS) $(OBJ_FOLDER)main.o

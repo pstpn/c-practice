@@ -18,5 +18,6 @@
 #define MEMORY_ERROR 4
 #define INCORRECT_ARGS 5
 #define INCORRECT_ARR 6
+#define OPEN_LIB_ERROR 7
 
 #endif // __MY_ERR___
