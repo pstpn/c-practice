@@ -1,7 +1,21 @@
 #include <stdio.h>
 
 #include "my_err.h"
-#include "tools.h"
+
+
+double get_avg(const int *pcur, const int *pend)
+{
+    int count = 0, summ = 0;
+
+
+    while (pcur != pend)
+    {
+        summ += *(pcur++);
+        ++count;
+    }
+
+    return (double) summ / count;
+}
 
 
 int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst, int *count)

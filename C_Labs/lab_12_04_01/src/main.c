@@ -64,37 +64,86 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-// #include <dlfcn.h>
+#include <dlfcn.h>
 
 #include "lib_arr.h"
+#include "my_types.h"
 #include "tools.h"
 #include "my_err.h"
 #include "my_def.h"
 
+#ifndef DYNAMIC
+int IS_DYN = 0;
+in_out_t tmp_array_filling = (in_out_t) array_filling;
+in_out_t tmp_writing_to_file = (in_out_t) writing_to_file;
+key_t tmp_key = (key_t) key;
+mysort_t tmp_mysort = (mysort_t) mysort;
+#else
+int IS_DYN = 1;
+in_out_t tmp_array_filling = NULL;
+in_out_t tmp_writing_to_file = NULL;
+key_t tmp_key = NULL;
+mysort_t tmp_mysort = NULL;
+#endif
+
 
 int main(int argc, char **argv)
 {
-    // void *arr_lib = NULL;
+    void *arr_lib = NULL;
 
-    // in_out_t array_filling = (in_out_t) load_func(arr_lib, "./libs/lib_arr.so", "array_filling");
-    // if (!array_filling)
-    //     return OPEN_LIB_ERROR;
+    in_out_t array_filling = tmp_array_filling;
+    in_out_t writing_to_file = tmp_writing_to_file;
 
-    // in_out_t writing_to_file = (in_out_t) load_func(arr_lib, "./libs/lib_arr.so", "writing_to_file");
-    // if (!array_filling)
-    //     return OPEN_LIB_ERROR;
+    key_t key = tmp_key;
 
-    // key_t key = (key_t) load_func(arr_lib, "./libs/lib_arr.so", "key");
-    // if (!key)
-    //     return OPEN_LIB_ERROR;
-    
-    // mysort_t mysort = (mysort_t) load_func(arr_lib, "./libs/lib_arr.so", "mysort");
-    // if (!mysort)
-    //     return OPEN_LIB_ERROR;
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+        if (!arr_lib)
+        {
+            printf("%s\n", dlerror());
+            return OPEN_LIB_ERROR;
+        }
+
+        array_filling = (in_out_t) dlsym(arr_lib, "array_filling");
+        if (!array_filling)
+        {
+            dlclose(arr_lib);
+            return OPEN_LIB_ERROR;
+        }
+
+        writing_to_file = (in_out_t) dlsym(arr_lib, "writing_to_file");
+        if (!writing_to_file)
+        {
+            dlclose(arr_lib);
+            return OPEN_LIB_ERROR;
+        }
+
+        key = (key_t) dlsym(arr_lib, "key");
+        if (!key)
+        {
+            dlclose(arr_lib);
+            return OPEN_LIB_ERROR;
+        }
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+        if (!mysort)
+        {
+            dlclose(arr_lib);
+            return OPEN_LIB_ERROR;
+        }
+    }
 
     
     if (argc < MIN_ARGS_COUNT || argc > MAX_ARGS_COUNT)
+    {
+        if (IS_DYN)
+            dlclose(arr_lib);
         return INCORRECT_ARGS_COUNT;
+    }
 
     FILE *f = fopen(*(++argv), "r");
 
@@ -102,10 +151,16 @@ int main(int argc, char **argv)
 
 
     if (f == NULL)
+    {
+        if (IS_DYN)
+            dlclose(arr_lib);
         return INCORRECT_FILENAME;
+    }
 
     if (get_count(f, &count) || !count)
     {
+        if (IS_DYN)
+            dlclose(arr_lib);
         fclose(f);
         return INCORRECT_FILE;
     }
@@ -116,7 +171,11 @@ int main(int argc, char **argv)
 
 
     if (arr_ptr == NULL)
+    {
+        if (IS_DYN)
+            dlclose(arr_lib);
         return MEMORY_ERROR;
+    }
 
     array_filling(f, cur_ptr, p_end);
 
@@ -125,6 +184,8 @@ int main(int argc, char **argv)
     FILE *g = fopen(*(++argv), "w");
     if (g == NULL)
     {
+        if (IS_DYN)
+            dlclose(arr_lib);
         free(arr_ptr);
         return INCORRECT_ARGS;
     }
@@ -133,6 +194,8 @@ int main(int argc, char **argv)
     {
         if (**(++argv) != 'f' || *(++(*argv)) != '\0')
         {
+            if (IS_DYN)
+                dlclose(arr_lib);
             free(arr_ptr);
             return INCORRECT_ARGS;
         }
@@ -144,6 +207,8 @@ int main(int argc, char **argv)
         if (key(cur_ptr, p_end, &pcur_new, &pend_new, &new_count) ||
             !new_count)
         {
+            if (IS_DYN)
+                dlclose(arr_lib);
             fclose(g);
             free(arr_ptr);
             return INCORRECT_ARR;
@@ -151,11 +216,17 @@ int main(int argc, char **argv)
 
         pcur_new = malloc(new_count * sizeof(int));
         if (!pcur_new)
+        {
+            if (IS_DYN)
+                dlclose(arr_lib);
             return MEMORY_ERROR;
+        }
 
         cur_ptr = arr_ptr;
         if (key(cur_ptr, p_end, &pcur_new, &pend_new, &new_count))
         {
+            if (IS_DYN)
+                dlclose(arr_lib);
             fclose(g);
             free(arr_ptr);
             return INCORRECT_ARR;
@@ -182,8 +253,8 @@ int main(int argc, char **argv)
     free(arr_ptr);
     fclose(g);
 
-    // if (DYN)
-    //     dlclose(arr_lib);
+    if (IS_DYN)
+        dlclose(arr_lib);
 
     return SUCCESS;
 }

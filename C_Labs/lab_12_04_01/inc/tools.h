@@ -5,7 +5,6 @@
 
 
 int get_count(FILE *f, int *count);
-double get_avg(const int *pcur, const int *pend);
 int compare_int(const void *p, const void *q);
 
 #endif // ___MY_TOOLS____

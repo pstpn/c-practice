@@ -10,8 +10,8 @@
  */
 #include <stdio.h>
 
-#include "../inc/tools.h"
-#include "../inc/my_err.h"
+#include "tools.h"
+#include "my_err.h"
 
 
 int get_count(FILE *f, int *count)
@@ -27,21 +27,6 @@ int get_count(FILE *f, int *count)
     }
 
     return SUCCESS;
-}
-
-
-double get_avg(const int *pcur, const int *pend)
-{
-    int count = 0, summ = 0;
-
-
-    while (pcur != pend)
-    {
-        summ += *(pcur++);
-        ++count;
-    }
-
-    return (double) summ / count;
 }
 
 

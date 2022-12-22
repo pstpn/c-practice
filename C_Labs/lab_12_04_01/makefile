@@ -45,13 +45,17 @@ Dld_dynamic : ld_dynamic
 # Build dynamic libs (linkage)
 $(LIBS_FOLDER)%.so : $(OBJ_FOLDER)%.o
 	mkdir -p $(LIBS_FOLDER)
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.
+	export LD_LIBRARY_PATH=.
 	$(CC) -o $@ -shared $<
 
-# # Build dynamic libs (load)
-# dynamic : CFLAGS += -DDYNAMIC -ldl -fPIC
-# dynamic : $(DYN_LIB_NAMES)
-# dynamic : app.exe
+# Build dynamic libs (load)
+dynamic : CFLAGS += -DDYNAMIC -ldl -fPIC
+dynamic : $(DYN_LIB_NAMES)
+dynamic : app.exe
+
+# Build dynamic libs (load; in debug mode)
+Ddynamic : CFLAGS += -g3
+Ddynamic : dynamic
 
 # Build app
 app.exe : $(OBJS) $(OBJ_FOLDER)main.o
@@ -65,11 +69,15 @@ $(OBJ_FOLDER)%.o : */%.c
 .PHONY: clean unit static Dstatic sfunc ld_dynamic Dld_dynamic ldfunc dynamic Ddynamic dfunc
 
 # Func tests for app with static libs
-sfunc : static
+sfunc : Dstatic
 	- func_tests/scripts/func_tests.sh
 
 # Func tests for app with dynamic libs (linkage)
-ldfunc : ld_dynamic
+ldfunc : Dld_dynamic
+	- func_tests/scripts/func_tests.sh
+
+# Func tests for app with dynamic libs (load)
+dfunc : Ddynamic
 	- func_tests/scripts/func_tests.sh
 
 sub_unit : UNIT_FLAGS += -lsubunit
