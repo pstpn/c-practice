@@ -6,7 +6,7 @@ OBJ_FOLDER := ./out/
 UNIT_FOLDER := ./unit_tests/
 LIBS_FOLDER := ./libs/
 UNIT_FILES := $(wildcard $(UNIT_FOLDER)*.c)
-UNIT_FLAGS := -std=c99 -Wall -Werror -lcheck -lpthread -lrt -lsubunit -I ./inc/ -lm
+UNIT_FLAGS := -std=c99 -Wall -Werror -lcheck -lpthread -lrt -lsubunit -DDYNAMIC -ldl -fPIC -I ./inc/ -lm
 
 # Libs
 LIB_OBJS := $(OBJ_FOLDER)lib_arr.o
@@ -66,7 +66,7 @@ $(OBJ_FOLDER)%.o : */%.c
 	mkdir -p out/
 	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: clean sunit static Dstatic sfunc ld_dynamic Dld_dynamic ldfunc dynamic Ddynamic dfunc
+.PHONY: clean sunit static Dstatic sfunc ldunit ld_dynamic Dld_dynamic ldfunc dunit dynamic Ddynamic dfunc
 
 # Func tests for app with static libs
 sfunc : Dstatic
@@ -80,9 +80,19 @@ ldfunc : Dld_dynamic
 dfunc : Ddynamic
 	- func_tests/scripts/func_tests.sh
 
-# Unit tests
+# Unit tests (static lib)
 sunit : UNIT_OBJS :=  $(OBJ_FOLDER)check_main.o $(STATIC_LIB_NAMES) $(filter-out $(LIB_OBJS) $(OBJ_FOLDER)main.o,$(patsubst $(C_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRC_FILES)))
 sunit : $(STATIC_LIB_NAMES) $(UNIT_FILES) $(filter-out $(LIB_OBJS) $(OBJ_FOLDER)main.o,$(patsubst $(C_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRC_FILES))) $(OBJ_FOLDER)check_main.o unit_tests.exe
+	./unit_tests.exe
+
+# Unit tests (dynamic lib; linkage)
+ldunit : UNIT_OBJS :=  $(OBJ_FOLDER)check_main.o $(DYN_LIB_NAMES) $(filter-out $(LIB_OBJS) $(OBJ_FOLDER)main.o,$(patsubst $(C_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRC_FILES)))
+ldunit : $(DYN_LIB_NAMES) $(UNIT_FILES) $(filter-out $(LIB_OBJS) $(OBJ_FOLDER)main.o,$(patsubst $(C_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRC_FILES))) $(OBJ_FOLDER)check_main.o unit_tests.exe
+	./unit_tests.exe
+
+# Unit tests (dynamic lib; load)
+dunit : UNIT_OBJS :=  $(OBJ_FOLDER)check_main.o $(filter-out $(LIB_OBJS) $(OBJ_FOLDER)main.o,$(patsubst $(C_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRC_FILES)))
+dunit : $(DYN_LIB_NAMES) $(UNIT_FILES) $(filter-out $(LIB_OBJS) $(OBJ_FOLDER)main.o,$(patsubst $(C_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRC_FILES))) $(OBJ_FOLDER)check_main.o unit_tests.exe
 	./unit_tests.exe
 
 unit_tests.exe : $(UNIT_OBJS)

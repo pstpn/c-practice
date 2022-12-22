@@ -1,8 +1,18 @@
 #include <stdlib.h>
 #include <check.h>
+#include <dlfcn.h>
 
+#include "load_libs.h"
 #include "lib_arr.h"
 #include "my_err.h"
+
+#ifndef DYNAMIC
+int IS_DYN = 0;
+key_t tmp_key = (key_t) key;
+#else
+int IS_DYN = 1;
+key_t tmp_key = NULL;
+#endif
 
 
 void init(int **arr, int size, int elem)
@@ -14,6 +24,18 @@ void init(int **arr, int size, int elem)
 
 START_TEST(test_key_one_elem)
 {
+    void *arr_lib = NULL;
+
+    key_t key = tmp_key;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        key = (key_t) dlsym(arr_lib, "key");
+    }
+
     int count = 1;
     int *in_arr = calloc(count, sizeof(int));
     init(&in_arr, count, 11);
@@ -26,6 +48,9 @@ START_TEST(test_key_one_elem)
 
     int rc = key(p_start, p_end, &ps, &pe, &count);
 
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_int_eq(rc, 0);
 
@@ -36,6 +61,18 @@ END_TEST
 
 START_TEST(test_key_equil_elems)
 {
+    void *arr_lib = NULL;
+
+    key_t key = tmp_key;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        key = (key_t) dlsym(arr_lib, "key");
+    }
+    
     int count = 5;
     int *in_arr = calloc(count, sizeof(int));
     init(&in_arr, count, 99);
@@ -47,6 +84,9 @@ START_TEST(test_key_equil_elems)
     int *ps = NULL, *pe = NULL;
     int rc = key(p_start, p_end, &ps, &pe, &count);
 
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_int_eq(rc, 0);
 
@@ -57,6 +97,18 @@ END_TEST
 
 START_TEST(test_key_all_zeros)
 {
+    void *arr_lib = NULL;
+
+    key_t key = tmp_key;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        key = (key_t) dlsym(arr_lib, "key");
+    }
+    
     int count = 3;
     int *in_arr = calloc(count, sizeof(int));
     init(&in_arr, count, 0);
@@ -68,6 +120,9 @@ START_TEST(test_key_all_zeros)
     int *ps = NULL, *pe = NULL;
     int rc = key(p_start, p_end, &ps, &pe, &count);
 
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_int_eq(rc, 0);
 
@@ -78,6 +133,18 @@ END_TEST
 
 START_TEST(test_key_incorrect_args_arr)
 {
+    void *arr_lib = NULL;
+
+    key_t key = tmp_key;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        key = (key_t) dlsym(arr_lib, "key");
+    }
+    
     int count = 6;
     int *in_arr = calloc(count, sizeof(int));
     init(&in_arr, count / 2, 5);
@@ -92,6 +159,9 @@ START_TEST(test_key_incorrect_args_arr)
 
     free(in_arr);
     free(ps);
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_int_eq(rc, INCORRECT_ARGS);
 }
@@ -100,6 +170,18 @@ END_TEST
 
 START_TEST(test_key_null_args)
 {
+    void *arr_lib = NULL;
+
+    key_t key = tmp_key;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        key = (key_t) dlsym(arr_lib, "key");
+    }
+    
     int count = 6;
     int *in_arr = calloc(count, sizeof(int));
     init(&in_arr, count / 2, 5);
@@ -114,6 +196,9 @@ START_TEST(test_key_null_args)
 
     free(in_arr);
     free(ps);
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_int_eq(rc, INCORRECT_ARGS);
 }
@@ -122,6 +207,18 @@ END_TEST
 
 START_TEST(test_key_eq_ptrs)
 {
+    void *arr_lib = NULL;
+
+    key_t key = tmp_key;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        key = (key_t) dlsym(arr_lib, "key");
+    }
+    
     int count = 6;
     int *in_arr = calloc(count, sizeof(int));
     init(&in_arr, count / 2, 5);
@@ -135,6 +232,9 @@ START_TEST(test_key_eq_ptrs)
     int rc = key(p_start, p_end, &ps, &pe, &count);
 
     free(in_arr);
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_int_eq(rc, INCORRECT_ARGS);
 }
@@ -143,6 +243,18 @@ END_TEST
 
 START_TEST(test_key_one_elem_found)
 {
+    void *arr_lib = NULL;
+
+    key_t key = tmp_key;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        key = (key_t) dlsym(arr_lib, "key");
+    }
+    
     int count = 4;
     int *in_arr = calloc(count, sizeof(int));
     init(&in_arr, count - 1, 1);
@@ -160,6 +272,10 @@ START_TEST(test_key_one_elem_found)
 
     int pos_arr[] = { 12 };
     
+
+    if (IS_DYN)
+        dlclose(arr_lib);
+
     ck_assert_int_eq(rc, SUCCESS);
     ck_assert_mem_eq(pos_arr, ps, sizeof(int));
 
@@ -171,6 +287,18 @@ END_TEST
 
 START_TEST(test_key_some_elems_found)
 {
+    void *arr_lib = NULL;
+
+    key_t key = tmp_key;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        key = (key_t) dlsym(arr_lib, "key");
+    }
+    
     int count = 7;
     int *in_arr = calloc(count, sizeof(int));
     init(&in_arr, count - 5, 3);
@@ -188,6 +316,10 @@ START_TEST(test_key_some_elems_found)
 
     int pos_arr[] = { 10, 10, 10, 10, 10 };
     
+
+    if (IS_DYN)
+        dlclose(arr_lib);
+
     ck_assert_int_eq(rc, SUCCESS);
     ck_assert_mem_eq(pos_arr, ps, sizeof(int) * count);
 

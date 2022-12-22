@@ -1,7 +1,18 @@
 #include <check.h>
+#include <dlfcn.h>
 
+#include "load_libs.h"
+#include "lib_arr.h"
 #include "my_err.h"
 #include "tools.h"
+
+#ifndef DYNAMIC
+mysort_t tmp_mysort = (mysort_t) mysort;
+#else
+mysort_t tmp_mysort = NULL;
+#endif
+
+extern int IS_DYN;
 
 
 int compare_string(const void *str_1, const void *str_2)
@@ -23,12 +34,28 @@ int compare_double(const void *a_1, const void *a_2)
 
 START_TEST(test_mysort_one_int_elem)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     int in_arr[] = { 100 };
     int *p_start = in_arr;
 
     mysort(p_start, 1, sizeof(int), compare_int);
 
     int pos_arr[] = { 100 };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 4);
 }
@@ -37,12 +64,28 @@ END_TEST
 
 START_TEST(test_mysort_equil_int_elems)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     int in_arr[] = { 100, 100, 100, 100, 100 };
     int *p_start = in_arr;
 
     mysort(p_start, 5, sizeof(int), compare_int);
 
     int pos_arr[] = { 100, 100, 100, 100, 100 };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 20);
 }
@@ -51,12 +94,28 @@ END_TEST
 
 START_TEST(test_mysort_sorted_int_elems)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     int in_arr[] = { -10, 20, 30, 40, 50 };
     int *p_start = in_arr;
 
     mysort(p_start, 5, sizeof(int), compare_int);
 
     int pos_arr[] = { -10, 20, 30, 40, 50 };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 20);
 }
@@ -65,12 +124,28 @@ END_TEST
 
 START_TEST(test_mysort_all_zeros_int_elems)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     int in_arr[] = { 0, 0, 0, 0, 0, 0, 0 };
     int *p_start = in_arr;
 
     mysort(p_start, 7, sizeof(int), compare_int);
 
     int pos_arr[] = { 0, 0, 0, 0, 0, 0, 0 };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 28);
 }
@@ -79,12 +154,28 @@ END_TEST
 
 START_TEST(test_mysort_common_int_elems)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     int in_arr[] = { 100, 1, 22, -15, 66, 3, -7 };
     int *p_start = in_arr;
 
     mysort(p_start, 7, sizeof(int), compare_int);
 
     int pos_arr[] = { -15, -7, 1, 3, 22, 66, 100 };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 28);
 }
@@ -93,12 +184,28 @@ END_TEST
 
 START_TEST(test_mysort_one_str_elem)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     char in_arr[1][4] = { "aaa" };
     char (*p_start)[4] = in_arr;
 
     mysort(p_start, 1, 4, compare_string);
 
     char pos_arr[1][4] = { "aaa" };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 3);
 }
@@ -107,12 +214,28 @@ END_TEST
 
 START_TEST(test_mysort_common_str_elems)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     char in_arr[4][4] = { "aba", "aaa", "aab", "aac" };
     char (*p_start)[4] = in_arr;
 
     mysort(p_start, 4, 4, compare_string);
 
     char pos_arr[4][4] = { "aaa", "aab", "aac", "aba" };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 12);
 }
@@ -121,12 +244,28 @@ END_TEST
 
 START_TEST(test_mysort_sorted_str_elems)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     char in_arr[4][4] = { "aaa", "aab", "bac", "aba" };
     char (*p_start)[4] = in_arr;
 
     mysort(p_start, 4, 4, compare_string);
 
     char pos_arr[4][4] = { "aaa", "aab", "aba", "bac" };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 16);
 }
@@ -135,12 +274,28 @@ END_TEST
 
 START_TEST(test_mysort_equil_str_elems)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     char in_arr[3][4] = { "aaa", "aaa", "aaa" };
     char (*p_start)[4] = in_arr;
 
     mysort(p_start, 3, 4, compare_string);
 
     char pos_arr[3][4] = { "aaa", "aaa", "aaa" };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 9);
 }
@@ -149,12 +304,28 @@ END_TEST
 
 START_TEST(test_mysort_empty_str_elem)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     char in_arr[2][1] = { "", "" };
     char (*p_start)[1] = in_arr;
 
     mysort(p_start, 2, 1, compare_string);
 
     char pos_arr[2][1] = { "", "" };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 2);
 }
@@ -163,12 +334,28 @@ END_TEST
 
 START_TEST(test_mysort_one_double_elem)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     double in_arr[] = { 100.103 };
     double *p_start = in_arr;
 
     mysort(p_start, 1, sizeof(double), compare_double);
 
     double pos_arr[] = { 100.103 };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 8);
 }
@@ -177,12 +364,28 @@ END_TEST
 
 START_TEST(test_mysort_common_double_elems)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     double in_arr[] = { 100.103, -13.444, 2.2, 0.1515 };
     double *p_start = in_arr;
 
     mysort(p_start, 4, sizeof(double), compare_double);
 
     double pos_arr[] = { -13.444, 0.1515, 2.2, 100.103 };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 32);
 }
@@ -191,12 +394,28 @@ END_TEST
 
 START_TEST(test_mysort_sorted_double_elems)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     double in_arr[] = { 14.2, 15.5, 44.03 };
     double *p_start = in_arr;
 
     mysort(p_start, 3, sizeof(double), compare_double);
 
     double pos_arr[] = { 14.2, 15.5, 44.03 };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 24);
 }
@@ -205,12 +424,28 @@ END_TEST
 
 START_TEST(test_mysort_all_zeros_double_elem)
 {
+    void *arr_lib = NULL;
+
+    mysort_t mysort = tmp_mysort;
+
+
+    if (IS_DYN)
+    {
+        arr_lib = dlopen("./libs/lib_arr.so", RTLD_NOW);
+
+        mysort = (mysort_t) dlsym(arr_lib, "mysort");
+    }
+
     double in_arr[] = { 0.0, 0.0 };
     double *p_start = in_arr;
 
     mysort(p_start, 2, sizeof(double), compare_double);
 
     double pos_arr[] = { 0.0, 0.0 };
+
+
+    if (IS_DYN)
+        dlclose(arr_lib);
     
     ck_assert_mem_eq(pos_arr, in_arr, 16);
 }

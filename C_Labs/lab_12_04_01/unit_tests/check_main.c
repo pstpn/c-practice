@@ -1,5 +1,6 @@
 #include <check.h>
 
+#include "../src/lib_arr.c"
 #include "check_key.c"
 #include "check_mysort.c"
 
