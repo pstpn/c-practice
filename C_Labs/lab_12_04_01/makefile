@@ -6,7 +6,7 @@ OBJ_FOLDER := ./out/
 UNIT_FOLDER := ./unit_tests/
 LIBS_FOLDER := ./libs/
 UNIT_FILES := $(wildcard $(UNIT_FOLDER)*.c)
-UNIT_FLAGS := -std=c99 -Wall -Werror -Wextra -Wpedantic -Wfloat-conversion -Wfloat-equal -Wvla -lcheck -lpthread -lrt -I ./inc/ -lm
+UNIT_FLAGS := -std=c99 -Wall -Werror -lcheck -lpthread -lrt -lsubunit -I ./inc/ -lm
 
 # Libs
 LIB_OBJS := $(OBJ_FOLDER)lib_arr.o
@@ -66,7 +66,7 @@ $(OBJ_FOLDER)%.o : */%.c
 	mkdir -p out/
 	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: clean unit static Dstatic sfunc ld_dynamic Dld_dynamic ldfunc dynamic Ddynamic dfunc
+.PHONY: clean sunit static Dstatic sfunc ld_dynamic Dld_dynamic ldfunc dynamic Ddynamic dfunc
 
 # Func tests for app with static libs
 sfunc : Dstatic
@@ -80,16 +80,13 @@ ldfunc : Dld_dynamic
 dfunc : Ddynamic
 	- func_tests/scripts/func_tests.sh
 
-sub_unit : UNIT_FLAGS += -lsubunit
-sub_unit : unit
-
 # Unit tests
-unit : unit_tests.exe
-	- ./unit_tests.exe
-unit : OBJS := $(filter-out $(OBJ_FOLDER)check_main.o,$(patsubst $(UNIT_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(UNIT_FILES)))
+sunit : UNIT_OBJS :=  $(OBJ_FOLDER)check_main.o $(STATIC_LIB_NAMES) $(filter-out $(LIB_OBJS) $(OBJ_FOLDER)main.o,$(patsubst $(C_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRC_FILES)))
+sunit : $(STATIC_LIB_NAMES) $(UNIT_FILES) $(filter-out $(LIB_OBJS) $(OBJ_FOLDER)main.o,$(patsubst $(C_FOLDER)%.c,$(OBJ_FOLDER)%.o,$(SRC_FILES))) $(OBJ_FOLDER)check_main.o unit_tests.exe
+	./unit_tests.exe
 
-unit_tests.exe : $(OBJS) $(OBJ_FOLDER)check_main.o
-	$(CC) $^ $(UNIT_FLAGS) -o $@
+unit_tests.exe : $(UNIT_OBJS)
+	$(CC) -o $@ $(UNIT_OBJS) $(UNIT_FLAGS)
 
 # Del trash
 clean :

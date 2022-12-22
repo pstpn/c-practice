@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <check.h>
 
-#include "../inc/w_w_arr.h"
-#include "../inc/my_err.h"
+#include "lib_arr.h"
+#include "my_err.h"
 
 
 void init(int **arr, int size, int elem)
@@ -14,75 +14,84 @@ void init(int **arr, int size, int elem)
 
 START_TEST(test_key_one_elem)
 {
-    int *in_arr = calloc(1, sizeof(int));
-    init(&in_arr, 1, 11);
+    int count = 1;
+    int *in_arr = calloc(count, sizeof(int));
+    init(&in_arr, count, 11);
     --in_arr;
 
     const int *p_start = in_arr;
     const int *p_end = p_start + 1;
 
     int *ps = NULL, *pe = NULL;
-    int rc = key(p_start, p_end, &ps, &pe);
+
+    int rc = key(p_start, p_end, &ps, &pe, &count);
+
+    
+    ck_assert_int_eq(rc, 0);
 
     free(in_arr);
-    
-    ck_assert_int_eq(rc, INCORRECT_ARR);
 }
 END_TEST
 
 
 START_TEST(test_key_equil_elems)
 {
-    int *in_arr = calloc(5, sizeof(int));
-    init(&in_arr, 5, 99);
-    in_arr -= 5;
+    int count = 5;
+    int *in_arr = calloc(count, sizeof(int));
+    init(&in_arr, count, 99);
+    in_arr -= count;
 
     const int *p_start = in_arr;
-    const int *p_end = p_start + 5;
+    const int *p_end = p_start + count;
 
     int *ps = NULL, *pe = NULL;
-    int rc = key(p_start, p_end, &ps, &pe);
+    int rc = key(p_start, p_end, &ps, &pe, &count);
+
+    
+    ck_assert_int_eq(rc, 0);
 
     free(in_arr);
-    
-    ck_assert_int_eq(rc, INCORRECT_ARR);
 }
 END_TEST
 
 
 START_TEST(test_key_all_zeros)
 {
-    int *in_arr = calloc(3, sizeof(int));
-    init(&in_arr, 3, 0);
-    in_arr -= 3;
+    int count = 3;
+    int *in_arr = calloc(count, sizeof(int));
+    init(&in_arr, count, 0);
+    in_arr -= count;
 
     const int *p_start = in_arr;
-    const int *p_end = p_start + 3;
+    const int *p_end = p_start + count;
 
     int *ps = NULL, *pe = NULL;
-    int rc = key(p_start, p_end, &ps, &pe);
+    int rc = key(p_start, p_end, &ps, &pe, &count);
+
+    
+    ck_assert_int_eq(rc, 0);
 
     free(in_arr);
-    
-    ck_assert_int_eq(rc, INCORRECT_ARR);
 }
 END_TEST
 
 
 START_TEST(test_key_incorrect_args_arr)
 {
-    int *in_arr = calloc(6, sizeof(int));
-    init(&in_arr, 3, 5);
-    init(&in_arr, 3, 7);
-    in_arr -= 6;
+    int count = 6;
+    int *in_arr = calloc(count, sizeof(int));
+    init(&in_arr, count / 2, 5);
+    init(&in_arr, count / 2, 7);
+    in_arr -= count;
 
     const int *p_start = in_arr;
     const int *p_end = p_start;
 
-    int *ps = NULL, *pe = NULL;
-    int rc = key(p_start, p_end, &ps, &pe);
+    int *ps = calloc(count, sizeof(int)), *pe = NULL;
+    int rc = key(p_start, p_end, &ps, &pe, &count);
 
     free(in_arr);
+    free(ps);
     
     ck_assert_int_eq(rc, INCORRECT_ARGS);
 }
@@ -91,18 +100,20 @@ END_TEST
 
 START_TEST(test_key_null_args)
 {
-    int *in_arr = calloc(6, sizeof(int));
-    init(&in_arr, 3, 5);
-    init(&in_arr, 3, 7);
-    in_arr -= 6;
+    int count = 6;
+    int *in_arr = calloc(count, sizeof(int));
+    init(&in_arr, count / 2, 5);
+    init(&in_arr, count / 2, 7);
+    in_arr -= count;
 
     const int *p_start = in_arr;
     const int *p_end = NULL;
 
-    int *ps = NULL, *pe = NULL;
-    int rc = key(p_start, p_end, &ps, &pe);
+    int *ps = calloc(count, sizeof(int)), *pe = NULL;
+    int rc = key(p_start, p_end, &ps, &pe, &count);
 
     free(in_arr);
+    free(ps);
     
     ck_assert_int_eq(rc, INCORRECT_ARGS);
 }
@@ -111,16 +122,17 @@ END_TEST
 
 START_TEST(test_key_eq_ptrs)
 {
-    int *in_arr = calloc(6, sizeof(int));
-    init(&in_arr, 3, 5);
-    init(&in_arr, 3, 7);
-    in_arr -= 6;
+    int count = 6;
+    int *in_arr = calloc(count, sizeof(int));
+    init(&in_arr, count / 2, 5);
+    init(&in_arr, count / 2, 7);
+    in_arr -= count;
 
     const int *p_start = in_arr;
-    const int *p_end = p_start + 6;
+    const int *p_end = p_start + count;
 
     int *ps = in_arr, *pe = NULL;
-    int rc = key(p_start, p_end, &ps, &pe);
+    int rc = key(p_start, p_end, &ps, &pe, &count);
 
     free(in_arr);
     
@@ -131,21 +143,25 @@ END_TEST
 
 START_TEST(test_key_one_elem_found)
 {
-    int *in_arr = calloc(4, sizeof(int));
-    init(&in_arr, 3, 1);
+    int count = 4;
+    int *in_arr = calloc(count, sizeof(int));
+    init(&in_arr, count - 1, 1);
     *in_arr = 12;
-    in_arr -= 3;
+    in_arr -= count - 1;
 
     const int *p_start = in_arr;
-    const int *p_end = p_start + 4;
+    const int *p_end = p_start + count;
 
-    int *ps = NULL, *pe = NULL;
-    int rc = key(p_start, p_end, &ps, &pe);
+
+    count -= 3;
+
+    int *ps = calloc(count, sizeof(int)), *pe = NULL;
+    int rc = key(p_start, p_end, &ps, &pe, &count);
 
     int pos_arr[] = { 12 };
     
     ck_assert_int_eq(rc, SUCCESS);
-    ck_assert_mem_eq(pos_arr, ps, 4);
+    ck_assert_mem_eq(pos_arr, ps, sizeof(int));
 
     free(in_arr);
     free(ps);
@@ -155,21 +171,25 @@ END_TEST
 
 START_TEST(test_key_some_elems_found)
 {
-    int *in_arr = calloc(7, sizeof(int));
-    init(&in_arr, 2, 3);
-    init(&in_arr, 5, 10);
-    in_arr -= 7;
+    int count = 7;
+    int *in_arr = calloc(count, sizeof(int));
+    init(&in_arr, count - 5, 3);
+    init(&in_arr, count - 2, 10);
+    in_arr -= count;
 
     const int *p_start = in_arr;
-    const int *p_end = p_start + 7;
+    const int *p_end = p_start + count;
 
-    int *ps = NULL, *pe = NULL;
-    int rc = key(p_start, p_end, &ps, &pe);
+
+    count -= 2;
+
+    int *ps = calloc(count, sizeof(int)), *pe = NULL;
+    int rc = key(p_start, p_end, &ps, &pe, &count);
 
     int pos_arr[] = { 10, 10, 10, 10, 10 };
     
     ck_assert_int_eq(rc, SUCCESS);
-    ck_assert_mem_eq(pos_arr, ps, 20);
+    ck_assert_mem_eq(pos_arr, ps, sizeof(int) * count);
 
     free(in_arr);
     free(ps);

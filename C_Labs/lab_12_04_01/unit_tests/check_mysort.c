@@ -1,8 +1,7 @@
 #include <check.h>
 
-#include "../inc/w_w_arr.h"
-#include "../inc/my_err.h"
-#include "../inc/tools.h"
+#include "my_err.h"
+#include "tools.h"
 
 
 int compare_string(const void *str_1, const void *str_2)
