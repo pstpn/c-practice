@@ -42,13 +42,7 @@ ld_dynamic : $(DYN_LIB_NAMES) app.exe
 Dld_dynamic : CFLAGS += -g3
 Dld_dynamic : ld_dynamic
 
-# Build dynamic libs (linkage)
-$(LIBS_FOLDER)%.so : $(OBJ_FOLDER)%.o
-	mkdir -p $(LIBS_FOLDER)
-	export LD_LIBRARY_PATH=.
-	$(CC) -o $@ -shared $<
-
-# Build dynamic libs (load)
+# Get app with dynamic libs (load)
 dynamic : CFLAGS += -DDYNAMIC -ldl -fPIC
 dynamic : $(DYN_LIB_NAMES)
 dynamic : app.exe
@@ -56,6 +50,12 @@ dynamic : app.exe
 # Build dynamic libs (load; in debug mode)
 Ddynamic : CFLAGS += -g3
 Ddynamic : dynamic
+
+# Build dynamic libs (linkage and load)
+$(LIBS_FOLDER)%.so : $(OBJ_FOLDER)%.o
+	mkdir -p $(LIBS_FOLDER)
+	export LD_LIBRARY_PATH=.
+	$(CC) -o $@ -shared $<
 
 # Build app
 app.exe : $(OBJS) $(OBJ_FOLDER)main.o
