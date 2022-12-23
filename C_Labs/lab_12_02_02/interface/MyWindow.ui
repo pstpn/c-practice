@@ -126,14 +126,17 @@ font: 75 33pt &quot;Ubuntu&quot;;</string>
      <string>Второе задание</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Filter_arr_btn">
+   <widget class="QPushButton" name="Filter_arr_max_alloc_btn">
     <property name="geometry">
      <rect>
       <x>630</x>
       <y>210</y>
-      <width>271</width>
+      <width>411</width>
       <height>51</height>
      </rect>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
     </property>
     <property name="styleSheet">
      <string notr="true">font: 25 oblique 11pt &quot;Umpush&quot;;
@@ -141,16 +144,16 @@ background-color: rgb(255, 255, 255);
 font: 63 13pt &quot;URW Gothic&quot;;</string>
     </property>
     <property name="text">
-     <string>Отфильтровать массив</string>
+     <string>Отфильтровать массив (выделение с запасом)</string>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="Output_filter_arr_entry">
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>280</y>
+      <y>410</y>
       <width>471</width>
-      <height>281</height>
+      <height>151</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -159,6 +162,27 @@ background-color: rgb(255, 255, 255);</string>
     </property>
     <property name="placeholderText">
      <string>Здесь будет выведен отфильтрованный массив</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Filter_arr_accurate_alloc_btn">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>270</y>
+      <width>411</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 25 oblique 11pt &quot;Umpush&quot;;
+background-color: rgb(255, 255, 255);
+font: 63 13pt &quot;URW Gothic&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Отфильтровать массив (точное выделение)</string>
     </property>
    </widget>
   </widget>

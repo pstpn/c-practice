@@ -31,6 +31,8 @@
  */
 #include <stdint.h>
 
+#include "my_def.h"
+
 
 void create_fib_arr(uint64_t *fib_arr, uint64_t count)
 {
@@ -58,3 +60,29 @@ void create_fib_arr(uint64_t *fib_arr, uint64_t count)
 }
 
 
+int is_copy(int *arr, int count, int num, int ind)
+{
+    for (int i = 0; i < ind; ++i)
+        if (arr[i] == num)
+            return TRUE;
+
+    return FALSE;
+}
+
+
+int del_dublicates(int *src_arr, int *src_count, int *dst_arr)
+{
+    int dst_len = 0;
+
+
+    for (int i = 0; i < *src_count; ++i)
+        if (!is_copy(src_arr, *src_count, src_arr[i], i))
+            ++dst_len;
+
+    if (dst_arr)
+        for (int i = 0, j = 0; i < *src_count; ++i)
+            if (!is_copy(src_arr, *src_count, src_arr[i], i))
+                dst_arr[j++] = src_arr[i];
+
+    return dst_len;
+}

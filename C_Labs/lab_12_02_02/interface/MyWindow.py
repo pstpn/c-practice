@@ -53,17 +53,25 @@ class Ui_MainWindow(object):
 "color: rgb(153, 193, 241);\n"
 "font: 75 33pt \"Ubuntu\";")
         self.label_2.setObjectName("label_2")
-        self.Filter_arr_btn = QtWidgets.QPushButton(self.centralwidget)
-        self.Filter_arr_btn.setGeometry(QtCore.QRect(630, 210, 271, 51))
-        self.Filter_arr_btn.setStyleSheet("font: 25 oblique 11pt \"Umpush\";\n"
+        self.Filter_arr_max_alloc_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.Filter_arr_max_alloc_btn.setGeometry(QtCore.QRect(630, 210, 411, 51))
+        self.Filter_arr_max_alloc_btn.setAcceptDrops(False)
+        self.Filter_arr_max_alloc_btn.setStyleSheet("font: 25 oblique 11pt \"Umpush\";\n"
 "background-color: rgb(255, 255, 255);\n"
 "font: 63 13pt \"URW Gothic\";")
-        self.Filter_arr_btn.setObjectName("Filter_arr_btn")
+        self.Filter_arr_max_alloc_btn.setObjectName("Filter_arr_max_alloc_btn")
         self.Output_filter_arr_entry = QtWidgets.QPlainTextEdit(self.centralwidget)
-        self.Output_filter_arr_entry.setGeometry(QtCore.QRect(630, 280, 471, 281))
+        self.Output_filter_arr_entry.setGeometry(QtCore.QRect(630, 410, 471, 151))
         self.Output_filter_arr_entry.setStyleSheet("font: 63 13pt \"URW Bookman\";\n"
 "background-color: rgb(255, 255, 255);")
         self.Output_filter_arr_entry.setObjectName("Output_filter_arr_entry")
+        self.Filter_arr_accurate_alloc_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.Filter_arr_accurate_alloc_btn.setGeometry(QtCore.QRect(630, 270, 411, 51))
+        self.Filter_arr_accurate_alloc_btn.setAcceptDrops(False)
+        self.Filter_arr_accurate_alloc_btn.setStyleSheet("font: 25 oblique 11pt \"Umpush\";\n"
+"background-color: rgb(255, 255, 255);\n"
+"font: 63 13pt \"URW Gothic\";")
+        self.Filter_arr_accurate_alloc_btn.setObjectName("Filter_arr_accurate_alloc_btn")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1135, 22))
@@ -103,8 +111,9 @@ class Ui_MainWindow(object):
         self.label_1.setText(_translate("MainWindow", "Первое задание"))
         self.Output_fib_arr_entry.setPlaceholderText(_translate("MainWindow", "Здесь будут выведены числа Фибоначчи"))
         self.label_2.setText(_translate("MainWindow", "Второе задание"))
-        self.Filter_arr_btn.setText(_translate("MainWindow", "Отфильтровать массив"))
+        self.Filter_arr_max_alloc_btn.setText(_translate("MainWindow", "Отфильтровать массив (выделение с запасом)"))
         self.Output_filter_arr_entry.setPlaceholderText(_translate("MainWindow", "Здесь будет выведен отфильтрованный массив"))
+        self.Filter_arr_accurate_alloc_btn.setText(_translate("MainWindow", "Отфильтровать массив (точное выделение)"))
         self.menu.setTitle(_translate("MainWindow", "Инструменты"))
         self.Exit.setTitle(_translate("MainWindow", "Выход"))
         self.action.setText(_translate("MainWindow", "Сокрыть текст"))

@@ -26,6 +26,7 @@ $(OBJ_FOLDER)%.o : */%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 run : dynamic
+	pyuic5 ./interface/MyWindow.ui -o ./interface/MyWindow.py
 	python3 ./src/main.py
 
 .PHONY: clean dynamic run
