@@ -3,7 +3,7 @@
  * @author Stepan Postnov ICS7-31B
  * @brief Файл, содержащий константы для работы
  * @version 0.1
- * @date 2022-09-23
+ * @date 2022-12-21
  * 
  * @copyright Copyright (c) 2022
  * 
