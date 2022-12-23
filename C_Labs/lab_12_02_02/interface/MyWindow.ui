@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1135</width>
+    <height>605</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(61, 56, 70);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPlainTextEdit" name="Input_count_fib_entry">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>80</y>
+      <width>441</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);
+font: 63 13pt &quot;URW Bookman&quot;;
+gridline-color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="plainText">
+     <string/>
+    </property>
+    <property name="placeholderText">
+     <string>Введите кол-во чисел Фибоначчи для генерации (до 90 чисел)</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Get_fib_arr_btn">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>210</y>
+      <width>271</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 25 oblique 11pt &quot;Umpush&quot;;
+background-color: rgb(255, 255, 255);
+font: 63 13pt &quot;URW Gothic&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Вывести полученный массив</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="Input_arr_entry">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>80</y>
+      <width>471</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 63 13pt &quot;URW Bookman&quot;;
+background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="placeholderText">
+     <string>Введите массив для фильтрации</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_1">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>10</y>
+      <width>351</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(61, 56, 70);
+color: rgb(153, 193, 241);
+font: 75 33pt &quot;Ubuntu&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Первое задание</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="Output_fib_arr_entry">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>280</y>
+      <width>471</width>
+      <height>281</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 63 13pt &quot;URW Bookman&quot;;
+background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="placeholderText">
+     <string>Здесь будут выведены числа Фибоначчи</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>10</y>
+      <width>381</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(61, 56, 70);
+color: rgb(153, 193, 241);
+font: 75 33pt &quot;Ubuntu&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Второе задание</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Filter_arr_btn">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>210</y>
+      <width>271</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 25 oblique 11pt &quot;Umpush&quot;;
+background-color: rgb(255, 255, 255);
+font: 63 13pt &quot;URW Gothic&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Отфильтровать массив</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="Output_filter_arr_entry">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>280</y>
+      <width>471</width>
+      <height>281</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 63 13pt &quot;URW Bookman&quot;;
+background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="placeholderText">
+     <string>Здесь будет выведен отфильтрованный массив</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1135</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Инструменты</string>
+    </property>
+    <addaction name="Clear_action"/>
+   </widget>
+   <widget class="QMenu" name="Exit">
+    <property name="title">
+     <string>Выход</string>
+    </property>
+    <addaction name="Quit"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="Exit"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action">
+   <property name="text">
+    <string>Сокрыть текст</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Извлечь текст</string>
+   </property>
+  </action>
+  <action name="Clear_action">
+   <property name="text">
+    <string>Очистить поля</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+   <property name="shortcutVisibleInContextMenu">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="Quit">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
